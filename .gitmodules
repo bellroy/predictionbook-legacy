@@ -1,5 +1,5 @@
-[submodule "vendor/chronic"]
-	path = vendor/chronic
+[submodule "vendor/plugins/chronic"]
+	path = vendor/plugins/chronic
 	url = git://github.com/tricycle/chronic.git
 [submodule "vendor/plugins/exception_notification"]
 	path = vendor/plugins/exception_notification
