@@ -1,0 +1,10 @@
+config/database.yml
+/coverage
+tmp/*
+doc/api
+doc/plugins
+db/dumps
+db/*.sqlite3
+db/*.sqlite3-journal
+log/*
+cache

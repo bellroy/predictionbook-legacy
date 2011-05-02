@@ -1,0 +1,21 @@
+<%= show_user(wager.user) %>
+<%= ((Time.current > wager.prediction.deadline) || !wager.prediction.unknown?) ? 'was' : 'is' %>
+<%= wager.relative_confidence %>%
+<%= wager.agree? ? 'sure' : 'against' %>
+<%= content_tag :span, 
+   link_to(show_title(wager.prediction.description), wager.prediction),
+   :class => (wager.prediction.withdrawn? ? 'withdrawn' : nil) -%>
+<%=  %>
+<%= show_time(wager.prediction.deadline) %>;
+<% if wager.prediction.open? %>
+<%   if Time.current > wager.prediction.deadline %>
+so <%= link_to 'judge them!', wager.prediction %>
+<%   else %>
+<%= link_to 'how sure are you?', wager.prediction %>
+<%   end -%>
+<% elsif !wager.unknown?; outcome = wager.correct? ? 'correct' : 'wrong' -%>
+and was
+<%= content_tag :span, outcome, :class => "outcome #{outcome}" -%>
+<% else -%>
+but withdrew the prediction <%= show_time(wager.prediction.updated_at)-%> 
+<% end -%>

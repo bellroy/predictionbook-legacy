@@ -1,0 +1,21 @@
+[submodule "vendor/chronic"]
+	path = vendor/chronic
+	url = git://github.com/tricycle/chronic.git
+[submodule "vendor/plugins/exception_notification"]
+	path = vendor/plugins/exception_notification
+	url = git://github.com/cainlevy/exception_notification.git
+[submodule "public/facebox"]
+	path = public/facebox
+	url = git://github.com/defunkt/facebox.git
+[submodule "vendor/plugins/restful_authentication"]
+	path = vendor/plugins/restful_authentication
+	url = git://github.com/technoweenie/restful-authentication.git
+[submodule "vendor/plugins/rspec_integration"]
+	path = vendor/plugins/rspec_integration
+	url = git://github.com/tricycle/rspec-integration.git
+[submodule "vendor/plugins/rspec_caching"]
+	path = vendor/plugins/rspec_caching
+	url = git://github.com/avdgaag/rspec-caching-test-plugin.git
+[submodule "vendor/plugins/version_fu"]
+	path = vendor/plugins/version_fu
+	url = git://github.com/jmckible/version_fu.git

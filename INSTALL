@@ -1,0 +1,16 @@
+== Local installation
+
+=== OSX, Linux
+
+Something like:
+[source,shell]
+--------------------
+$ git clone git://github.com/tricycle/predictionbook.git
+$ cd predictionbook
+$ git submodule update --init
+$ cp config/database.example.yml config/database.yml
+$ rake gems:install
+$ RAILS_ENV=test rake gems:install
+$ RAILS_ENV=cucumber rake gems:install
+$ rake db:schema:load
+--------------------

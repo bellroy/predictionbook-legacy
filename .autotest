@@ -1,0 +1,17 @@
+Autotest.add_hook :initialize do |at|
+  #reduce frequency of file checks, default 1s
+  #at.sleep = 5
+  
+  #the fewer files autotest has to watch, the less CPU it uses
+  %w[.svn .hg .git .DS_Store
+     .rdebugrc .autotest Rakefile Capfile
+     spec/spec.opts spec/rcov.opts
+     stories doc script tmp db log public
+     vendor/rails spec/model_factory.rb
+     /vendor/plugins/rspec
+     /vendor/plugins/rspec-rails
+    ].each do |dir|
+    at.add_exception(%r{^\./#{dir}})
+  end
+  
+end

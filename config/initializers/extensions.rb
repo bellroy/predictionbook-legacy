@@ -1,0 +1,1 @@
+Dir['lib/**/*_ext.rb'].map(&method(:require))

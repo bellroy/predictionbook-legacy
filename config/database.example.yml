@@ -1,0 +1,26 @@
+local: &local
+  adapter: mysql
+  username: root
+  password:
+  pool: 5
+  timeout: 5000
+  encoding: utf8
+
+development:
+  database: pbook_dev
+  <<: *local
+
+test: &test
+  database: pbook_test
+  <<: *local
+
+cucumber:
+  <<: *test
+
+staging:
+  database: pbook_staging
+  <<: *local
+
+production:
+  database: pbook_prod
+  <<: *local
