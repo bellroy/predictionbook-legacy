@@ -1,6 +1,7 @@
 local: &local
   adapter: mysql
   username: root
+# host: 127.0.0.1 # Uncomment to fix OSX could not connect to socket
   password:
   pool: 5
   timeout: 5000
