@@ -22,6 +22,11 @@ $ open http://127.0.0.1:3000/
 $ fg
 --------------------
 
+=== Google Analytics
+
+* In file "app/views/layouts/application.html.erb"
+  + replace [your_analytics_tracker_id] with your Google Analytics tracker id
+
 === OSX "Can't connect to local MySQL server through socket" Error
 
 * add "host: 127.0.0.1" to the database.yml for local
