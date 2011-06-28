@@ -9,8 +9,24 @@ $ git clone git://github.com/tricycle/predictionbook.git
 $ cd predictionbook
 $ git submodule update --init
 $ cp config/database.example.yml config/database.yml
-$ rake gems:install
-$ RAILS_ENV=test rake gems:install
-$ RAILS_ENV=cucumber rake gems:install
+$ sudo rake gems:install
+$ sudo RAILS_ENV=test rake gems:install
+$ sudo RAILS_ENV=cucumber rake gems:install
+$ /usr/local/mysql/bin/mysqladmin -u root password "" # ACHTUNG! dev machines only
+$ rake db:create
 $ rake db:schema:load
+$ script/server
+$ ^Z # ctrl+z
+$ bg
+$ open http://127.0.0.1:3000/
+$ fg
 --------------------
+
+=== Google Analytics
+
+* In file "app/views/layouts/application.html.erb"
+  + replace [your_analytics_tracker_id] with your Google Analytics tracker id
+
+=== OSX "Can't connect to local MySQL server through socket" Error
+
+* add "host: 127.0.0.1" to the database.yml for local
