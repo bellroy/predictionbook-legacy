@@ -203,7 +203,7 @@ module AuthenticatedSystem
       return unless @current_user
       case
       when valid_remember_cookie? then @current_user.refresh_token # keeping same expiry date
-      when new_cookie_flag        then @current_user.remember_me 
+      when new_cookie_flag        then @current_user.remember_me_for(2.years)
       else                             @current_user.forget_me
       end
       send_remember_cookie!
