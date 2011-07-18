@@ -41,7 +41,7 @@
 		<div id="header-main" class="clear">
 		  <%= link_to image_tag('logo.png', :alt => 'PredictionBook'), '/', :id => 'logo' %>
 		  
-		  <% if @title %><div id='title' class='clear'><h1><%= link_to @title -%></h1></div><% end -%>
+		  <% if @title %><div id='title' class='clear'><h1><%= link_to html_escape(@title) -%></h1></div><% end -%>
 			
 			<%# <form id="search" method="get" action="#">
         <div class="clear">
