@@ -40,15 +40,14 @@
 		</div><!-- #nav -->
 		<div id="header-main" class="clear">
 		  <%= link_to image_tag('logo.png', :alt => 'PredictionBook'), '/', :id => 'logo' %>
-		  
-		  <% if @title %><div id='title' class='clear'><h1><%= link_to html_escape(@title) -%></h1></div><% end -%>
-			
-			<%# <form id="search" method="get" action="#">
-        <div class="clear">
-          <input name="search" type="text" />
-          <input type="image" src="/styling/button-search.png" alt="Search" />
-        </div>
-      </form> %>
+
+			<form id="search" method="get" action="http://www.google.com/search">
+				<div class="clear">
+					<input type="hidden" name="sitesearch" value="predictionbook.com" />
+					<input name="q" type="text" />
+					<input type="image" src="/styling/button-search.png" alt="Search" />
+				</div>
+			</form>
 		</div><!-- #header-main -->
 	</div><!-- #header -->			
 
