@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>PredictionBook: <%= @title ? @title : 'How sure are you?' -%></title>
+  <title>PredictionBook: <%=h @title ? @title : 'How sure are you?' -%></title>
   <meta charset="utf-8" />
   <%= stylesheet_link_tag %w(/styling/application /styling/predictions /styling/forms /styling/home /styling/footer /facebox/facebox) %>
   <% [6,7].each do |ie_version| %>
