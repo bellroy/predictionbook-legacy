@@ -6,7 +6,7 @@ class Response < ActiveRecord::Base
   belongs_to :prediction
   belongs_to :user
   
-  MAX_COMMENT_LENGTH = 160
+  MAX_COMMENT_LENGTH = 250
   
   validates_presence_of :prediction
   validates_presence_of :user, :message => 'Who are you?'

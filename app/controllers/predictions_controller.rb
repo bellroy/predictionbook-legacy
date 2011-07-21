@@ -69,6 +69,7 @@ class PredictionsController < ApplicationController
       @response_notification.viewed!
     end
     @events = @prediction.events
+    @title = @prediction.description
   end
   
   def judged

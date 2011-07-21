@@ -236,14 +236,14 @@ describe Response do
       response.should be_valid
     end
     
-    it 'should limit comments to 160 characters' do
-      response = valid_response(:comment => ("A" * 161))
+    it 'should limit comments to 250 characters' do
+      response = valid_response(:comment => ("A" * 251))
       response.should_not be_valid
-      response.errors[:comment].should =~ /160/
+      response.errors[:comment].should =~ /250/
     end
     
-    it 'should allow html that would still display less than 160 characters' do
-      response = valid_response(:comment => (%Q{A "link":http://www.google.com/#{'a' * 161}}))
+    it 'should allow html that would still display less than 250 characters' do
+      response = valid_response(:comment => (%Q{A "link":http://www.google.com/#{'a' * 251}}))
       response.should have(:no).errors_on(:comment)
     end
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>PredictionBook: <%= @title ? @title : 'How sure are you?' -%></title>
+  <title>PredictionBook: <%=h @title ? @title : 'How sure are you?' -%></title>
   <meta charset="utf-8" />
   <%= stylesheet_link_tag %w(/styling/application /styling/predictions /styling/forms /styling/home /styling/footer /facebox/facebox) %>
   <% [6,7].each do |ie_version| %>
@@ -40,15 +40,14 @@
 		</div><!-- #nav -->
 		<div id="header-main" class="clear">
 		  <%= link_to image_tag('logo.png', :alt => 'PredictionBook'), '/', :id => 'logo' %>
-		  
-		  <% if @title %><div id='title' class='clear'><h1><%= link_to @title -%></h1></div><% end -%>
-			
-			<%# <form id="search" method="get" action="#">
-        <div class="clear">
-          <input name="search" type="text" />
-          <input type="image" src="/styling/button-search.png" alt="Search" />
-        </div>
-      </form> %>
+
+			<form id="search" method="get" action="http://www.google.com/search">
+				<div class="clear">
+					<input type="hidden" name="sitesearch" value="predictionbook.com" />
+					<input name="q" type="text" />
+					<input type="image" src="/styling/button-search.png" alt="Search" />
+				</div>
+			</form>
 		</div><!-- #header-main -->
 	</div><!-- #header -->			
 
@@ -86,7 +85,7 @@
       <li><a href="#">Help</a></li>
     </ul>
     %>
-		<span class="copyright">PredictionBook © 2008-2009</span>
+		<span class="copyright">PredictionBook © 2008-2011</span>
 	</div><!-- #footer -->
 
 </div><!-- #container -->
