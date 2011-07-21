@@ -168,10 +168,10 @@ describe User do
       @user.remember_token_expires_at.should == time
     end
 
-    it 'remembers me default two weeks' do
-      before = 2.weeks.from_now.utc
+    it 'remembers me default two years' do
+      before = 2.years.from_now.utc
       @user.remember_me
-      after = 2.weeks.from_now.utc
+      after = 2.years.from_now.utc
       @user.remember_token.should_not be_nil
       @user.remember_token_expires_at.should_not be_nil
       @user.remember_token_expires_at.between?(before, after).should be_true

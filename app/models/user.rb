@@ -84,4 +84,8 @@ class User < ActiveRecord::Base
   def to_s
     name || login
   end
+
+  def remember_me
+    remember_me_for 2.years
+  end
 end
