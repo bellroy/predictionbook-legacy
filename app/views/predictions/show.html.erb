@@ -31,7 +31,7 @@
       or if it would not be possible to decide its outcome.
     </p>
     <% form_for([:withdraw, @prediction], :html => {:method => :post}) do |f| %>
-      <%= f.submit 'Withdraw Prediction', :confirm => 'Are you sure you want to withdraw this prediction' %>
+      <%= f.submit 'Withdraw Prediction', :confirm => 'Are you sure you want to withdraw this prediction?' %>
     <% end %>
   </div>
   <% end %>
