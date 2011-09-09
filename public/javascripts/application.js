@@ -36,12 +36,15 @@ $(document).ready(function() {
   $('.single-checkbox-form').livequery(single_checkbox_form)
   // AJAXly call feedback?date=DATESTRING when date field changes, populate help box with result
   $("#prediction_deadline_text").keyup(debounce(deadline_changed, 250))
-  $("#response_comment").keyup(response_preview)
+  $("#response_comment").keyup(debounce(response_preview, 250))
   $("a[class~=facebox]").facebox()
 
   // The browser often fills out forms at load time
   if($("#prediction_deadline_text").get(0)) {
     deadline_changed.call($("#prediction_deadline_text").get(0));
+  }
+  if($("#response_comment").get(0)) {
+    response_preview.call($("#response_comment").get(0));
   }
 })
 
@@ -98,7 +101,6 @@ function deadline_changed(event) {
       },
       success: function(text) {
         if(that.value != requestForValue) {
-          // Same explanation as for the `error` case.
           return;
         }
         $('#prediction_deadline_text_preview').text(text)
@@ -108,17 +110,22 @@ function deadline_changed(event) {
 }
 
 function response_preview(event) {
+  var that = this;
   if (this.value == '') {
     $('#response_comment_preview').text('')
   }
   else {
-    $.ajaxSync({
+    var requestForValue = this.value;
+    $.ajax({
       url: '/responses/preview',
       type: 'GET',
       data: 'response[comment]=' + this.value,
       dataType: 'text',
-      timeout: 1000,
+      timeout: 5000,
       success: function(text) {
+        if(that.value != requestForValue) {
+          return;
+        }
         $('#response_comment_preview').html(text)
       }
     });
