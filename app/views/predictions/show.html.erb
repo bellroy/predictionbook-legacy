@@ -15,10 +15,23 @@
   This prediction is <strong>private</strong>. <%= render :partial => 'predictions/private_note' %>
 </p>
 <%- end -%>
+<%= render :partial => 'predictions/events' %>
+<% if logged_in? -%>
+<div id='response'>
+  <%= render :partial => 'responses/form' %>
+</div>
+<div id='notification'>
+<h2>Email Notifications</h2>
+<div id="deadline_notification"><%= render :partial => @deadline_notification %></div>
+<div id="response_notification"><%= render :partial => @response_notification %></div>
+</div>
+<% else -%>
+<p><span class='notice'>Please <%= link_to 'log in', login_path %> to respond to or judge prediction</span></p>
+<% end -%>
 <% if logged_in? && !@prediction.withdrawn? -%>
 <div id="judgement">
   <h2>Judge this prediction</h2>
-  <p class="note">Only judge this prediction once its outcome is known.<br />Record your opinion below.</p>
+  <p class="note">Only judge this prediction once its outcome is known.<br />Record your opinion above, <strong>not</strong> here!</p>
   <% form_tag(judge_prediction_path(@prediction)) do %>
     <%=  outcome_button 'Unknown' %>
     <%=  outcome_button 'Right' %>
@@ -38,16 +51,3 @@
   <br />
 </div>
 <% end %>
-<%= render :partial => 'predictions/events' %>
-<% if logged_in? -%>
-<div id='response'>
-  <%= render :partial => 'responses/form' %>
-</div>
-<div id='notification'>
-<h2>Email Notifications</h2>
-<div id="deadline_notification"><%= render :partial => @deadline_notification %></div>
-<div id="response_notification"><%= render :partial => @response_notification %></div>
-</div>
-<% else -%>
-<p><span class='notice'>Please <%= link_to 'log in', login_path %> to respond to or judge prediction</span></p>
-<% end -%>
