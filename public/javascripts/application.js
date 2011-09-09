@@ -35,7 +35,7 @@ function debounce(func, threshold, execAsap) {
 $(document).ready(function() {
   $('.single-checkbox-form').livequery(single_checkbox_form)
   // AJAXly call feedback?date=DATESTRING when date field changes, populate help box with result
-  $("#prediction_deadline_text").keyup(debounce(deadline_changed, 500))
+  $("#prediction_deadline_text").keyup(debounce(deadline_changed, 250))
   $("#response_comment").keyup(response_preview)
   $("a[class~=facebox]").facebox()
 
