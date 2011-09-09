@@ -40,7 +40,7 @@ class LabelledFormBuilder < ActionView::Helpers::FormBuilder
 
   def confidence_field(method, options={})
     new_class = "#{options.delete(:class)} confidence".strip
-    new_options = {:trailing_content => ' %',:maxlength => 3, :class => new_class}
+    new_options = {:trailing_content => ' % chance',:maxlength => 3, :class => new_class}
     text_field(method, new_options.merge(options))
   end
   

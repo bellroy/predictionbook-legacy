@@ -27,9 +27,9 @@
 <div class="clear">
   <h2>Make a Prediction</h2>
 	<%= f.hidden_field :uuid %>
-  <%= f.text_area :description, :label => 'What do you think will happen?' %>
-  <%= f.confidence_field :initial_confidence, :label => 'How sure are you?' %>
-  <%= f.text_field :deadline_text, :label => 'When you will know?', :trailing_content => link_to('Help', '#date-help', :class => 'help facebox'), :preview => true %>
+  <%= f.text_area :description, :label => 'What do you think will (or won\'t) happen?' %>
+  <%= f.confidence_field :initial_confidence, :label => 'What\'s your estimate of this happening?' %>
+  <%= f.text_field :deadline_text, :label => 'When will you know?', :trailing_content => link_to('Help', '#date-help', :class => 'help facebox'), :preview => true %>
   <%= f.submit 'Lock it in!' %>
   <%= f.check_box :notify_creator, :label => 'Email me when I should know the outcome' %>
   <%- unless current_user.has_email? -%>

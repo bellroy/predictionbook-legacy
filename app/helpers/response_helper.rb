@@ -1,12 +1,7 @@
 module ResponseHelper
   def confidence_for(wager)
     unless wager.confidence.blank?
-      if wager.confidence == 50
-        'is fence sitting'
-      else
-        against = wager.agree? ? "" : ' against'
-        "estimated #{wager.relative_confidence}%" + against
-      end
+      "estimated #{wager.confidence}%"
     end
   end
 
