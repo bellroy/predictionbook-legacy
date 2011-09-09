@@ -1,6 +1,7 @@
 <%= show_user(wager.user) %>
 estimated
-<%= wager.confidence %>%
+<%= content_tag :span, "#{wager.confidence}%", :class => "confidence",
+  :style => style_for_confidence(wager.confidence) %>
 on
 <%= content_tag :span, 
    link_to(show_title(wager.prediction.description), wager.prediction),

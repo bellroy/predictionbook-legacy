@@ -1,7 +1,8 @@
 module ResponseHelper
   def confidence_for(wager)
     unless wager.confidence.blank?
-      "estimated #{wager.confidence}%"
+      "estimated #{content_tag(:span, "#{wager.confidence}%",
+        :class => "confidence", :style => style_for_confidence(wager.confidence))}"
     end
   end
 

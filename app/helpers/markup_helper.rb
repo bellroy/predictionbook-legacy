@@ -41,4 +41,9 @@ module MarkupHelper
       end
     end
   end
+
+  def style_for_confidence(confidence)
+    # http://www.w3.org/TR/css3-color/#hsl-examples
+    "background-color: hsl(#{(confidence * (200/100.0) - 70)}, 100%, 90%);"
+  end
 end

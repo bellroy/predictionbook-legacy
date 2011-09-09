@@ -92,6 +92,10 @@ p .responses {
   white-space: nowrap;
 }
 
+.confidence {
+  font-weight: bold;
+}
+
 .statistics table {
   width: 65%;
   margin-right: 1em;
