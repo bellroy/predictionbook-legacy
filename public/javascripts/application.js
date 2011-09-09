@@ -17,6 +17,11 @@ $(document).ready(function() {
   $("#prediction_deadline_text").keyup(deadline_changed)
   $("#response_comment").keyup(response_preview)
   $("a[class~=facebox]").facebox()
+
+  // The browser often fills out forms at load time
+  if($("#prediction_deadline_text").get(0)) {
+    deadline_changed.call($("#prediction_deadline_text").get(0));
+  }
 })
 
 // Focus first input field on page
