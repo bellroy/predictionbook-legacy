@@ -1,4 +1,4 @@
-<h2>Add your estimate or comment</h2>
+<h2><strong>Add your estimate or comment</strong></h2>
 <% form_for([@prediction,@prediction_response]) do |f| %>
   <% if @prediction.open? %>
   <%= f.confidence_field(:confidence, :label => 'What\'s your estimate of this happening?') %>
