@@ -20,7 +20,7 @@ div#responses {
   clear:both;
 }
 /* ul#responses is on the prediction pages;
-#responses ul is on the homepage. */
+div#responses ul is on the homepage and happenstance. */
 ul#responses, #responses ul {
   padding-left: 0.5em;
   margin-left: 0.5em;
