@@ -48,21 +48,33 @@ function single_checkbox_form() {
 }
 
 function deadline_changed(event) {
+  var that = this;
   if (this.value == '') {
     $('#prediction_deadline_preview').text('')
   }
   else {
+    var requestForValue = this.value;
     $('#prediction_deadline_text_preview').text('Waiting…')
-    $.ajaxSync({
+    $.ajax({
       url: '/feedback',
       type: 'GET',
       data: 'date=' + this.value,
       dataType: 'text',
-      timeout: 1000,
+      timeout: 5000,
       error: function() {
+        if(that.value != requestForValue) {
+          // Ignore the server response because the user changed the text
+          // box during the request.  That's okay though, because there's
+          // already a request for the new value.
+          return;
+        }
         $('#prediction_deadline_text_preview').text("I can't work out a time from that, sorry")
       },
       success: function(text) {
+        if(that.value != requestForValue) {
+          // Same explanation as for the `error` case.
+          return;
+        }
         $('#prediction_deadline_text_preview').text(text)
       }
     })
