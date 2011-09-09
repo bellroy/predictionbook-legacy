@@ -19,9 +19,14 @@ ul#responses {
 div#responses {
   clear:both;
 }
-#responses ul {
+/* ul#responses is on the prediction pages;
+#responses ul is on the homepage. */
+ul#responses, #responses ul {
   padding-left: 0.5em;
   margin-left: 0.5em;
+}
+#responses li {
+  margin: 0 0 0.75em 0.75em;
 }
 #responses .change, #responses .change a {
   color: #777;
