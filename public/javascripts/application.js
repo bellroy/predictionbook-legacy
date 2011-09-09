@@ -11,10 +11,31 @@ if(css.styleSheet) { // IE does it this way
 }
 $('html head').get(0).appendChild(css)
 
+// http://unscriptable.com/index.php/2009/03/20/debouncing-javascript-methods/
+function debounce(func, threshold, execAsap) {
+  var timeout;
+  return function debounced() {
+    var obj = this, args = arguments;
+    var delayed = function() {
+      if (!execAsap) {
+        func.apply(obj, args);
+      }
+      timeout = null;
+    }
+    if (timeout) {
+      clearTimeout(timeout);
+    } else if (execAsap) {
+      func.apply(obj, args);
+    }
+
+    timeout = setTimeout(delayed, threshold || 100);
+  };
+}
+
 $(document).ready(function() {
   $('.single-checkbox-form').livequery(single_checkbox_form)
   // AJAXly call feedback?date=DATESTRING when date field changes, populate help box with result
-  $("#prediction_deadline_text").keyup(deadline_changed)
+  $("#prediction_deadline_text").keyup(debounce(deadline_changed, 500))
   $("#response_comment").keyup(response_preview)
   $("a[class~=facebox]").facebox()
 
