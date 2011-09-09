@@ -7,6 +7,7 @@ on
    link_to(show_title(wager.prediction.description), wager.prediction),
    :class => (wager.prediction.withdrawn? ? 'withdrawn' : nil) -%>
 <%=  %>
+<abbr title="To be decided (judged)">TBD</abbr>
 <%= show_time(wager.prediction.deadline) -%>
 <% if wager.prediction.open? -%>
 <%   if Time.current > wager.prediction.deadline -%>

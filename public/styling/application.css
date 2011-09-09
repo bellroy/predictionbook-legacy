@@ -100,6 +100,9 @@ a:visited {
 h2 a:hover {
 	background-color: #ccc;
 }
+abbr {
+	border-bottom: 1px dotted #ccc;
+}
 
 /* Buttons
 -------------------------------------------------------------------------------------- */
