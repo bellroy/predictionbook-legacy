@@ -5,7 +5,7 @@ estimated
 on
 <%= content_tag :span, 
    link_to(show_title(wager.prediction.description), wager.prediction),
-   :class => (wager.prediction.withdrawn? ? 'withdrawn' : nil) -%>
+   :class => (wager.prediction.withdrawn? ? 'withdrawn ' : '') + "break-word" -%>
 <%=  %>
 <abbr title="To be decided (judged)">TBD</abbr>
 <%= show_time(wager.prediction.deadline) -%>

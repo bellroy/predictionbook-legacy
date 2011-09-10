@@ -31,6 +31,7 @@ ul#responses, #responses ul {
 #responses .change, #responses .change a {
   color: #777;
   font-style: italic;
+  word-wrap: break-word;
 }
 #judgement .withdraw form { 
   float: left; 
@@ -81,6 +82,9 @@ li.prediction.wrong {
 .prediction .description {
   padding: 0.2em 0 0 2em;
 }
+.title {
+  word-wrap: break-word;
+}
 h1.withdrawn, .prediction.withdrawn .title, span.withdrawn {
   text-decoration: line-through;
 }
@@ -95,6 +99,10 @@ span.notice, .judged .prediction .description .judgement,
 }
 p .responses {
   white-space: nowrap;
+}
+
+li.response, li.change, .comment {
+  word-wrap: break-word;
 }
 
 .confidence {

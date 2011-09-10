@@ -67,6 +67,7 @@ h1, h2 {
 h1 {
 	color: #363535;
 	font-size: 18px;
+	word-wrap: break-word;
 }
 h2 {
 	display: inline-block;
@@ -249,4 +250,8 @@ span.correct {
 span.wrong {
 	padding-right: 14px;
 	background: url(cross.png) bottom right no-repeat;
+}
+
+.break-word {
+	word-wrap: break-word;
 }
