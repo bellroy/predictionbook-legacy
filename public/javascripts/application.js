@@ -87,7 +87,7 @@ function deadline_changed(event) {
     $.ajax({
       url: '/feedback',
       type: 'GET',
-      data: 'date=' + this.value,
+      data: 'date=' + encodeURIComponent(this.value),
       dataType: 'text',
       timeout: 5000,
       error: function() {
@@ -119,7 +119,7 @@ function response_preview(event) {
     $.ajax({
       url: '/responses/preview',
       type: 'GET',
-      data: 'response[comment]=' + this.value,
+      data: 'response[comment]=' + encodeURIComponent(this.value),
       dataType: 'text',
       timeout: 5000,
       success: function(text) {
