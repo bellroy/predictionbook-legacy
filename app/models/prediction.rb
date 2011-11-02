@@ -27,7 +27,7 @@ class Prediction < ActiveRecord::Base
     opts = {
       :include => :responses, # Eager loading of :judgements breaks judgement and unknown?
       :conditions => [
-        'predictions.deadline > UTC_TIMESTAMP() AND predictions.created_at > ?', 1.month.ago
+        'predictions.deadline > UTC_TIMESTAMP() AND predictions.created_at > ?', 2.weeks.ago
       ],
       :order => 'count(responses.prediction_id) DESC, predictions.deadline ASC',
       :group => 'predictions.id',

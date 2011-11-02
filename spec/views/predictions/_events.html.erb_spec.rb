@@ -15,10 +15,10 @@ describe 'Prediction responses partial' do
     render_partial
     response.should have_tag('li', 2)
   end
-  it 'should show the responses relative_confidence' do
-    @wager.stub!(:relative_confidence).and_return(70)
+  it 'should show the responses confidence' do
+    @wager.stub!(:confidence).and_return(30)
     render_partial
-    response.should have_text(/70%/)
+    response.should have_text(/30%/)
   end
   it 'should not show nil relative_confidences' do
     @wager.should_not_receive(:relative_confidence)
@@ -34,11 +34,6 @@ describe 'Prediction responses partial' do
     @wager.stub!(:created_at).and_return(3.days.ago)
     render_partial
     response.should have_tag('span', '3 days ago')
-  end
-  it 'should show if response is in disagreement' do
-    @wager.stub!(:agree?).and_return(false)
-    render_partial
-    response.should have_text(/against/)
   end
   describe 'should include any supplied comments' do
     before(:each) do

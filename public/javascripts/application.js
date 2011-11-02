@@ -11,12 +11,41 @@ if(css.styleSheet) { // IE does it this way
 }
 $('html head').get(0).appendChild(css)
 
+// http://unscriptable.com/index.php/2009/03/20/debouncing-javascript-methods/
+function debounce(func, threshold, execAsap) {
+  var timeout;
+  return function debounced() {
+    var obj = this, args = arguments;
+    var delayed = function() {
+      if (!execAsap) {
+        func.apply(obj, args);
+      }
+      timeout = null;
+    }
+    if (timeout) {
+      clearTimeout(timeout);
+    } else if (execAsap) {
+      func.apply(obj, args);
+    }
+
+    timeout = setTimeout(delayed, threshold || 100);
+  };
+}
+
 $(document).ready(function() {
   $('.single-checkbox-form').livequery(single_checkbox_form)
   // AJAXly call feedback?date=DATESTRING when date field changes, populate help box with result
-  $("#prediction_deadline_text").keyup(deadline_changed)
-  $("#response_comment").keyup(response_preview)
+  $("#prediction_deadline_text").keyup(debounce(deadline_changed, 250))
+  $("#response_comment").keyup(debounce(response_preview, 250))
   $("a[class~=facebox]").facebox()
+
+  // The browser often fills out forms at load time
+  if($("#prediction_deadline_text").get(0)) {
+    deadline_changed.call($("#prediction_deadline_text").get(0));
+  }
+  if($("#response_comment").get(0)) {
+    response_preview.call($("#response_comment").get(0));
+  }
 })
 
 // Focus first input field on page
@@ -48,21 +77,32 @@ function single_checkbox_form() {
 }
 
 function deadline_changed(event) {
+  var that = this;
   if (this.value == '') {
     $('#prediction_deadline_preview').text('')
   }
   else {
+    var requestForValue = this.value;
     $('#prediction_deadline_text_preview').text('Waiting…')
-    $.ajaxSync({
+    $.ajax({
       url: '/feedback',
       type: 'GET',
-      data: 'date=' + this.value,
+      data: 'date=' + encodeURIComponent(this.value),
       dataType: 'text',
-      timeout: 1000,
+      timeout: 5000,
       error: function() {
+        if(that.value != requestForValue) {
+          // Ignore the server response because the user changed the text
+          // box during the request.  That's okay though, because there's
+          // already a request for the new value.
+          return;
+        }
         $('#prediction_deadline_text_preview').text("I can't work out a time from that, sorry")
       },
       success: function(text) {
+        if(that.value != requestForValue) {
+          return;
+        }
         $('#prediction_deadline_text_preview').text(text)
       }
     })
@@ -70,17 +110,22 @@ function deadline_changed(event) {
 }
 
 function response_preview(event) {
+  var that = this;
   if (this.value == '') {
     $('#response_comment_preview').text('')
   }
   else {
-    $.ajaxSync({
+    var requestForValue = this.value;
+    $.ajax({
       url: '/responses/preview',
       type: 'GET',
-      data: 'response[comment]=' + this.value,
+      data: 'response[comment]=' + encodeURIComponent(this.value),
       dataType: 'text',
-      timeout: 1000,
+      timeout: 5000,
       success: function(text) {
+        if(that.value != requestForValue) {
+          return;
+        }
         $('#response_comment_preview').html(text)
       }
     });

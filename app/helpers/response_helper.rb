@@ -1,12 +1,8 @@
 module ResponseHelper
   def confidence_for(wager)
     unless wager.confidence.blank?
-      if wager.confidence == 50
-        'is fence sitting'
-      else
-        against = wager.agree? ? "" : ' against'
-        "estimated #{wager.relative_confidence}%" + against
-      end
+      "estimated #{content_tag(:span, "#{wager.confidence}%",
+        :class => "confidence", :style => style_for_confidence(wager.confidence))}"
     end
   end
 
