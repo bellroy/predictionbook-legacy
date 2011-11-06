@@ -1,3 +1,4 @@
+# coding: utf-8
 module MarkupHelper
   def show_user(user, cls=nil)
     link_to h(user), user_path(user), :class => classes('user',cls)
@@ -35,7 +36,7 @@ module MarkupHelper
   def outcome(prediction)
     content_tag(:span, :title => prediction.readable_outcome) do
       case prediction.outcome
-      when true then '✔'
+      when true then '✔' 
       when false then '✘'
       else '?'
       end

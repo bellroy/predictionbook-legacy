@@ -16,12 +16,12 @@ class Response < ActiveRecord::Base
   validate :prediction_accepting_confidences
   
   delegate :unknown?, :to => :prediction
-  named_scope :comments, :conditions => "comment is not null"
+  scope :comments, where("comment is not null")
   
-  nillify_blank :comment
+  #nillify_blank :comment
 
   WAGER_CONDITION = "confidence is not null"
-  named_scope :wagers, :conditions => WAGER_CONDITION do
+  scope :wagers, where(WAGER_CONDITION) do
     def predictions
       collect(&:prediction).uniq
     end
@@ -33,12 +33,11 @@ class Response < ActiveRecord::Base
     end
   end
   
-  named_scope :not_private, 
-    :joins => :prediction, 
-    :conditions => {'predictions.private' => false}
+  scope :not_private, joins(:prediction).where('predictions.private' => false)
   
   def self.recent
-    not_private.rsort
+    #not_private.rsort
+    not_private
   end
   
   def self.prefetch_joins

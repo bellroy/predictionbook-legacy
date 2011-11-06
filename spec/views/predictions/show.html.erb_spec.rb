@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../../spec_helper'
+require 'spec_helper'
 
 describe 'Prediction detail page' do
   before(:each) do
@@ -14,13 +14,13 @@ describe 'Prediction detail page' do
        #HACK, mock_model#errors should expect this message!
        #TODO: extract this and possibly submit RSpec-Rails patch
     )
-    template.stub!(:render).with(:partial => 'predictions/events')
+    view.stub!(:render).with('predictions/events')
   end
   
   it 'should have a heading of the predicitons description' do
     @prediction.stub!(:description).and_return('Prediction Heading')
     render_show
-    response.should have_tag('h1', 'Prediction Heading')
+    rendered.should have_selector('h1', 'Prediction Heading')
   end
   
   describe 'creation time' do
@@ -61,7 +61,7 @@ describe 'Prediction detail page' do
   end
   
   it 'should render the events partial' do
-    template.should_receive(:render).with(:partial => 'predictions/events')
+    view.should_receive(:render).with(:partial => 'predictions/events')
     render_show
   end
   
@@ -69,8 +69,8 @@ describe 'Prediction detail page' do
     describe 'outcome form' do
       describe 'if not logged in' do
         it 'should not exist' do
-          template.stub!(:logged_in?).and_return(false)
-
+          view.stub!(:logged_in?).and_return(false)
+       
           render_show
           response.should_not have_tag('form[action="/predictions/1/judge"]')
         end
@@ -78,7 +78,9 @@ describe 'Prediction detail page' do
       
       describe 'if logged in but prediction is withdrawn' do
         it 'should not exist' do
-          template.stub!(:logged_in?).and_return(true)
+          #view.stub!(:logged_in?).and_return(true)
+          view.stub!(:logged_in?).and_return(true)
+          view.stub!(:current_user).and_return(@user)
           @prediction.stub!(:withdrawn?).and_return(true)
           render_show
           response.should_not have_tag('form[action="/predictions/1/judge"]')
@@ -87,7 +89,9 @@ describe 'Prediction detail page' do
 
       describe 'if logged in' do
         before(:each) do
-          template.stub!(:logged_in?).and_return(true)
+          #view.stub!(:logged_in?).and_return(true)
+          view.stub!(:logged_in?).and_return(true)
+          view.stub!(:current_user).and_return(@user)
           @prediction.stub!(:to_param).and_return('1')
         end
         describe 'form and submit tags' do
@@ -148,13 +152,13 @@ describe 'Prediction detail page' do
   
   describe 'response form' do
     it 'should ask if logged in' do
-      template.should_receive(:logged_in?).at_least(:once).and_return(false)
+      view.should_receive(:logged_in?).at_least(:once).and_return(false)
       render_show
     end
     
     describe 'if not logged in' do
       it 'should not have a form' do
-        template.stub!(:logged_in?).and_return(false)
+        view.stub!(:logged_in?).and_return(false)
         
         render_show
         response.should_not have_tag('form#new_response')
@@ -166,7 +170,9 @@ describe 'Prediction detail page' do
     describe '(logged in)' do
       before(:each) do
         @prediction.stub!(:unknown?).and_return(true)
-        template.stub!(:logged_in?).and_return(true)
+        #view.stub!(:logged_in?).and_return(true)
+        view.stub!(:logged_in?).and_return(true)
+        view.stub!(:current_user).and_return(@user)
         @prediction.stub!(:deadline).and_return 1.hour.from_now
         assigns[:deadline_notification] = DeadlineNotification.new(:user => @user, :prediction => @prediction)
         assigns[:response_notification] = ResponseNotification.new(:user => @user, :prediction => @prediction)
@@ -210,7 +216,9 @@ describe 'Prediction detail page' do
     describe '(logged in)' do
       before(:each) do
         @prediction.stub!(:unknown?).and_return(true)
-        template.stub!(:logged_in?).and_return(true)
+        #view.stub!(:logged_in?).and_return(true)
+        view.stub!(:logged_in?).and_return(true)
+        view.stub!(:current_user).and_return(@user)
       end
 
       it 'should have a form that submits to predictions/:id/responses' do
@@ -248,6 +256,7 @@ describe 'Prediction detail page' do
   end
   
   def render_show
-    render 'predictions/show'
+    #render 'predictions/show'
+    render
   end
 end

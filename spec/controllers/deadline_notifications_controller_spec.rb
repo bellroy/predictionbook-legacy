@@ -1,8 +1,8 @@
-require File.dirname(__FILE__) + '/../spec_helper'
+require 'spec_helper'
 require File.dirname(__FILE__) + '/notifications_controller_spec'
 
 describe DeadlineNotificationsController do
-  it_should_behave_like 'NotificationsController'
+  it_should_behave_like 'Notifications'
   def get_index
     get :index, :user_id => 'glenn'
   end

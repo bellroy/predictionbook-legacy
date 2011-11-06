@@ -40,7 +40,7 @@ class LabelledFormBuilder < ActionView::Helpers::FormBuilder
 
   def confidence_field(method, options={})
     new_class = "#{options.delete(:class)} confidence".strip
-    new_options = {:trailing_content => ' %',:maxlength => 3, :class => new_class}
+    new_options = {:trailing_content => ' %', :maxlength => 3, :class => new_class}
     text_field(method, new_options.merge(options))
   end
   
@@ -62,7 +62,7 @@ class LabelledFormBuilder < ActionView::Helpers::FormBuilder
     trailing_content, preview, label_containing, label_string = extract_labelling_options!(options)
     label_string ||= method.to_s.humanize
     
-    error = object.errors.on(method)
+    error = object.errors[method]
     control = yield(method, {:size => nil}.merge(options)) #size isn't valid in html5
     outer_class = error ? 'error' : nil
     @template.content_tag(:p, :class => outer_class) do
@@ -74,14 +74,14 @@ class LabelledFormBuilder < ActionView::Helpers::FormBuilder
       content << trailing_content if trailing_content
       content << error_content(method) if error
       content << preview_content(method) if preview
-      content.join
+      content.join.html_safe
     end
   end
   
   def error_content(method)
     @template.content_tag(
       :span,
-      [object.errors.on(method)].flatten.first,
+      [object.errors[method]].flatten.first,
       :class => 'message'
     )
   end

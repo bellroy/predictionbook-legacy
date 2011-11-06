@@ -1,39 +1,44 @@
-ActionController::Routing::Routes.draw do |map|
+Predictionbook::Application.routes.draw do
+  devise_for :users
   
-  map.with_options(:controller => 'sessions') do |sessions|
-    sessions.logout '/logout',:action => 'destroy'
-    sessions.login '/login', :action => 'new'
-  end
-  map.resource :session
-  
-  map.with_options(:controller => 'users') do |users|
-    users.register '/register', :action => 'create'
-    users.signup '/signup', :action => 'new'
+  resources :users do
+    member do
+      get :settings
+    end
+    resources :deadline_notifications
   end
   
-  map.resources :users, :member => {:settings => :get}, :has_many => :deadline_notifications
+  resources :deadline_notifications
+  resources :response_notifications
+  match '/feedback' => "feedback#show"
+  
+  resources :responses do
+    collection do
+      get :preview
+    end
+  end
 
-  map.resources :deadline_notifications
-  map.resources :response_notifications
+  resources :predictions do
+    collection do
+      get :unjudged
+      get :judged
+      get :future
+      get :recent
+    end
+    
+    member do
+      post :judge
+      post :withdraw
+    end
+    
+    resources :responses do
+      collection do
+        get :preview
+      end
+    end
+  end
 
-  map.resource :feedback, :controller => 'feedback'
-  map.resources :responses, :collection => { :preview => :get }
-  
-  map.resources :predictions,
-    :collection => {
-      :recent => :get,
-      :unjudged => :get,
-      :judged => :get,
-      :future => :get
-    }, :member => {
-      :withdraw => :post,
-      :judge => :post
-    } do |p|
-    p.resources :responses, :collection => {:preview => :get}
-  end
-  map.with_options(:controller => 'predictions') do |predictions|
-    # urls should be canonical
-    predictions.happenstance  '/happenstance', :action => 'happenstance'
-    predictions.root :action => 'home'
-  end
+  match '/happenstance' => 'predictions#happenstance', :as => :happenstance
+  root :to => "predictions#home"
 end
+

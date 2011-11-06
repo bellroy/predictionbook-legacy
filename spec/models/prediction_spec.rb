@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../spec_helper'
+require 'spec_helper'
 
 describe Prediction do
   def described_type;Prediction;end
@@ -98,7 +98,7 @@ describe Prediction do
     end
     
     it 'should have many wagers' do
-      Prediction.new.wagers.should be_kind_of(Array)
+      Prediction.new.wagers.all.should be_kind_of(Array)
     end
     
     describe 'initial response creation' do

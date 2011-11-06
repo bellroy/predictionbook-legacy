@@ -1,10 +1,10 @@
-require 'digest/sha1'
-
 class User < ActiveRecord::Base
-  include Authentication
-  include Authentication::ByPassword
-  include Authentication::ByCookieToken
 
+  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable,
+         :encryptable, :encryptor => :restful_authentication_sha1
+  
+  attr_accessible :email, :login, :password, :password_confirmation, :remember_me 
+       
   has_many :responses
   delegate :wagers, :to => :responses
   has_many :predictions, 
@@ -20,14 +20,14 @@ class User < ActiveRecord::Base
   validates_presence_of     :login
   validates_length_of       :login,    :maximum => 255
   validates_uniqueness_of   :login,    :case_sensitive => false
-  validates_format_of       :login,    :with => RE_LOGIN_OK, :message => "Readable characters only please"
+  #validates_format_of       :login,    :with => RE_LOGIN_OK, :message => "Readable characters only please"
 
   validates_length_of       :name,     :maximum => 255, :allow_nil => true
-  validates_format_of       :name,     :with => RE_NAME_OK, :message => "Readable characters only please"
+  #validates_format_of       :name,     :with => RE_NAME_OK, :message => "Readable characters only please"
 
   validates_length_of       :email,    :within => 6..100, :allow_nil => true #r@a.wk
   validates_uniqueness_of   :email,    :case_sensitive => false, :allow_nil => true
-  validates_format_of       :email,    :with => /\A#{RE_EMAIL_NAME}@[-A-Z\._]+\z/i, :message => MSG_EMAIL_BAD, :allow_nil => true
+  #validates_format_of       :email,    :with => /\A#{RE_EMAIL_NAME}@[-A-Z\._]+\z/i, :message => MSG_EMAIL_BAD, :allow_nil => true
   
   #NOTE: You can't set anything via mass assignment that is not in this list
   ## eg. User.new(:foo => 'bar') # will not assign foo
@@ -84,8 +84,12 @@ class User < ActiveRecord::Base
   def to_s
     name || login
   end
+  
+  protected
 
-  def remember_me
-    remember_me_for 2.years
+  def self.find_for_database_authentication(warden_conditions)
+    conditions = warden_conditions.dup
+    login = conditions.delete(:login)
+    where(conditions).where(["lower(login) = :value OR lower(email) = :value", { :value => login.downcase }]).first
   end
 end

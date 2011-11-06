@@ -4,7 +4,7 @@ unless ENV['IGNORE_MIGRATION_CHECK'] == 'yes'
 
     missing_migrations = []
 
-    Dir["#{RAILS_ROOT}/db/migrate/*"].map do |path|
+    Dir["#{Rails.root}/db/migrate/*"].map do |path|
       migration = path.match(%r{migrate/(\d+)})[1].to_i
       missing_migrations << migration unless run_migrations.include?(migration)
     end

@@ -1,15 +1,17 @@
-require File.dirname(__FILE__) + '/../../spec_helper'
+require 'spec_helper'
 
 describe 'A page to input a prediction' do
   before(:each) do
     errors = mock('errors', :on => nil)
     assigns[:prediction] = @prediction = mock_model(Prediction, :new_record? => true, :errors => errors, :null_object => true)
-    template.stub!(:logged_in?).and_return(true)
-    template.stub!(:user_statistics_cache_key).and_return "stats"
-    template.stub!(:statistics).and_return(Statistics.new([])) 
+    
+    view.stub!(:user_statistics_cache_key).and_return "stats"
+    view.stub!(:statistics).and_return(Statistics.new([])) 
     @user = mock_model(User, :has_email? => false)
+    view.stub!(:user_signed_in?).and_return(true)
+    view.stub!(:current_user).and_return(@user)
+    
     @user.stub!(:to_param).and_return "username"
-    template.stub!(:current_user).and_return(@user)
   end
   
   def render_view

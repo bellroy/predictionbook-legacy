@@ -1,5 +1,3 @@
 module ApplicationHelper
-  
-  include CacheKeys
-        
+  include CacheKeys      
 end

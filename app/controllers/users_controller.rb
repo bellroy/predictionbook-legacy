@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_filter :lookup_user, :only => [:show, :update, :settings]
-  before_filter :login_required, :only => [:settings, :update]
+  before_filter :authenticate_user!, :only => [:settings, :update]
   before_filter :user_is_current_user, :only => [:settings, :update]
   
   helper_method :statistics

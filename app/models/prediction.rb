@@ -8,21 +8,26 @@ class Prediction < ActiveRecord::Base
     Chronic.parse(date, :context => :future)
   end
   
-  named_scope :not_withdrawn, :conditions => { :withdrawn => false }
+  scope :not_withdrawn, where(:withdrawn => false)
   # if you change the implementation of 'public', also change this scope in response
-  named_scope :not_private, :conditions => { :private => false }
+  scope :not_private, where(:private => false)
+  
   def self.unjudged
-    not_private.not_withdrawn.rsort(:deadline).all(:include => :judgements).select(&:due_for_judgement?)
+    not_private.not_withdrawn.includes(:judgements).rsort(:deadline).select(&:due_for_judgement?)
   end
+  
   def self.judged
     not_private.not_withdrawn(:include => :judgements).reject(&:unknown?).rsort(:judged_at)
   end
+  
   def self.future
     sort(:deadline).not_private.not_withdrawn(:include => :judgements).select { |p| p.unknown? && !p.overdue? }
   end
+  
   def self.recent
     rsort.not_private.not_withdrawn(:include => [:judgements, :responses, :creator])
   end
+  
   def self.popular
     opts = {
       :include => :responses, # Eager loading of :judgements breaks judgement and unknown?
@@ -53,7 +58,9 @@ class Prediction < ActiveRecord::Base
   validates_presence_of :initial_confidence, :message => 'How sure are you?', :on => :create
   validate :confidence_on_response, :on => :create
   
-  def after_validation
+  after_validation :deadline_text
+  
+  def deadline_text
     errors.add(:deadline_text, errors.on(:deadline))
   end
   
@@ -164,7 +171,7 @@ class Prediction < ActiveRecord::Base
   end
   
   def count_wagers_by(user)
-    wagers.count(:conditions => {:user_id => user})
+    wagers.where(:user_id => user).count
   end
   
   def deadline_notification_for_user(user)
@@ -176,8 +183,8 @@ class Prediction < ActiveRecord::Base
   end
   
   def confidence_on_response
-    if @initial_response && @initial_response.errors.on(:confidence)
-      errors.add(:initial_confidence, @initial_response.errors.on(:confidence))
+    if @initial_response && @initial_response.errors[:confidence]
+      errors.add(:initial_confidence, @initial_response.errors[:confidence])
     end
   end
 end

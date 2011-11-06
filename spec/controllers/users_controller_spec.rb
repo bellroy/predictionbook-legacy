@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../spec_helper'
+require 'spec_helper'
 
 describe UsersController do
   before(:each) do
@@ -12,14 +12,17 @@ describe UsersController do
     def show
       get :show, :id => 'adam'
     end
+    
     it 'should lookup the user by [] lookup' do
       User.should_receive(:[]).and_return(@user)
       show
     end
+    
     it 'should get all the recent predictions by user name' do
       @user.should_receive(:predictions)
       show
     end
+    
     it 'should limit the scope to not_private predictions if not logged in as the user of the page' do
       controller.stub!(:current_user).and_return :eve
       predictions = []
@@ -29,6 +32,7 @@ describe UsersController do
       show
       assigns[:predictions].should == :public_predictions
     end
+    
     it 'should not limit the scope if current_user is owner of page' do
       controller.stub!(:current_user).and_return @user
       @user.stub!(:predictions).and_return :private_predictions
@@ -68,13 +72,13 @@ describe UsersController do
   
   describe 'users setting page' do
     before(:each) do
-      controller.stub!(:logged_in?).and_return(true)
+      controller.stub!(:user_signed_in?).and_return(true)
     end
     def show
       get :settings, :id => 'adam'
     end
     it 'should require the user to be logged in' do
-      controller.stub!(:logged_in?).and_return(false)
+      controller.stub!(:user_signed_in?).and_return(false)
       show
       response.should redirect_to(login_path)
     end

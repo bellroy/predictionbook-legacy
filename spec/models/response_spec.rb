@@ -26,7 +26,7 @@ describe Response do
   describe 'finders' do
     it_should_behave_like 'model class with common scopes'
     
-    describe '“limit” scope' do
+    describe '"limit" scope' do
       before(:each) do
         5.times{create_valid_response}
       end
@@ -236,14 +236,14 @@ describe Response do
       response.should be_valid
     end
     
-    it 'should limit comments to 250 characters' do
-      response = valid_response(:comment => ("A" * 251))
+    it 'should limit comments to 160 characters' do
+      response = valid_response(:comment => ("A" * 161))
       response.should_not be_valid
-      response.errors[:comment].should =~ /250/
+      response.errors[:comment].should =~ /160/
     end
     
-    it 'should allow html that would still display less than 250 characters' do
-      response = valid_response(:comment => (%Q{A "link":http://www.google.com/#{'a' * 251}}))
+    it 'should allow html that would still display less than 160 characters' do
+      response = valid_response(:comment => (%Q{A "link":http://www.google.com/#{'a' * 161}}))
       response.should have(:no).errors_on(:comment)
     end
 

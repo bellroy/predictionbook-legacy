@@ -16,15 +16,15 @@ describe Judgement do
   end
   
   describe '#outcome' do
-    it 'should be true when assigned string “right”' do
+    it 'should be true when assigned string "right"' do
       Judgement.new(:outcome => 'right').outcome.should == true
     end
     
-    it 'should be false when assigned string “wrong”' do
+    it 'should be false when assigned string "wrong"' do
       Judgement.new(:outcome => 'wrong').outcome.should == false
     end
     
-    it 'should be nil when assigned string “unknown”' do
+    it 'should be nil when assigned string "unknown"' do
       Judgement.new(:outcome => 'unknown').outcome.should == nil
     end
     

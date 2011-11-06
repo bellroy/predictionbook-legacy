@@ -1,19 +1,21 @@
-require File.dirname(__FILE__) + '/../spec_helper'
+require 'spec_helper'
 
 describe PredictionsController do
+  include Devise::TestHelpers
+  
   before(:each) do
     controller.stub!(:set_timezone)
   end
   
   describe 'getting the homepage' do
     it 'should map GET / to home action' do
-      params_from(:get, '/').should == {
-        :controller => 'predictions', :action => 'home'
-      }
+      {:get => "/"}.should route_to("predictions#home") 
     end
+    
     it 'should map home action to /' do
-      route_for(:controller => 'predictions', :action => 'home').should == '/'
+      assert_recognizes({:action => "home", :controller => "predictions"}, { :method=> :get, :path=> "/" })
     end
+    
     it 'should assign a new prediction' do
       Prediction.stub!(:new).and_return(:new_prediction)
       get :home
@@ -47,7 +49,7 @@ describe PredictionsController do
     end
   end
   
-  describe 'getting the “happenstance” page' do
+  describe 'getting the "happenstance" page' do
     describe 'unjudged' do
       before(:each) do
         @mock_collection = mock('collection').as_null_object
@@ -113,13 +115,11 @@ describe PredictionsController do
     end
     
     it 'should map /predictions to "index" action' do
-      params_from(:get, '/predictions').should == {
-        :controller => 'predictions', :action => 'index'
-      }
+      {:get => "/predictions"}.should route_to("predictions#index") 
     end
     
     it 'should map "index" action to /predictions' do
-      route_for(:controller => 'predictions', :action => 'index').should == '/predictions'
+      assert_recognizes({:action => "index", :controller => "predictions"}, { :method=> :get, :path=> "/predictions" })
     end
     
     describe 'index of predictions' do
@@ -192,87 +192,80 @@ describe PredictionsController do
   end
   
   describe 'Getting a form for a new Prediction' do
-    before(:each) do
-      controller.stub!(:logged_in?).and_return(true)
-    end
+    describe 'current user signed in' do
+      before do
+        @user = User.new
+        controller.stub(:authenticate_user!)
+        controller.stub(:current_user).and_return(@user)
+      end
     
-    it 'should redirect to the login page if not logged in' do
-      controller.stub!(:logged_in?).and_return(false)
-      get :new
-      response.should redirect_to(login_path)
-    end
+     it 'should map "new" action to predictions/new' do
+        {:get => "/predictions/new"}.should route_to("predictions#new") 
+      end
     
-    it 'should store the destination url in the session if not logged in' do
-      controller.stub!(:logged_in?).and_return(false)
-      controller.should_receive(:store_location)
-      get :new
-    end
+      it 'should map GET to /predictions/new to "new" action' do
+         assert_recognizes({:action => "new", :controller => "predictions"}, {:method=> :get, :path=> "/predictions/new" })
+      end
     
-    it 'should map "new" action to predictions/new' do
-      route_for(:controller => 'predictions', :action => 'new').should == '/predictions/new'
-    end
+      it 'should map GET to / to "index" action' do
+        {:get => "/"}.should route_to("predictions#home") 
+      end
     
-    it 'should map GET to /predictions/new to "new" action' do
-      params_from(:get, '/predictions/new').should == {
-        :controller => 'predictions', :action => 'new'
-      }
-    end
-    
-    it 'should map GET to / to "index" action' do
-      params_from(:get, '/').should == {
-        :controller => 'predictions', :action => 'home'
-      }
-    end
-    
-    it 'should respond with http success status' do
-      get :new
+      it 'should respond with http success status' do
+        get :new
       response.should be_success
+      end
+    
+      it 'should render new template' do
+        get :new
+        response.should render_template('predictions/new')
+      end
+    
+      it 'should instantiate a new Prediction object' do
+        Prediction.should_receive(:new)
+        get :new
+      end
+    
+      it 'should assign new prediction object for the view' do
+        Prediction.stub!(:new).and_return(:prediction)
+        get :new
+        assigns[:prediction].should == :prediction
+      end
     end
     
-    it 'should render new template' do
-      get :new
-      response.should render_template('predictions/new')
-    end
+    describe 'current user not signed in' do
+      it 'should redirect to the login page' do
+        get :new
+        response.should redirect_to(new_user_session_path)
+      end
     
-    it 'should instantiate a new Prediction object' do
-      Prediction.should_receive(:new)
-      get :new
-    end
-    
-    it 'should assign new prediction object for the view' do
-      Prediction.stub!(:new).and_return(:prediction)
-      get :new
-      assigns[:prediction].should == :prediction
-    end
+      it 'should store the destination url in the session' do
+        controller.should_receive(:store_location)
+        get :new
+      end
+    end  
   end
   
   describe 'Creating a new prediction' do
     def post_prediction(params={})
-      post :create, 'prediction' => params
+      post :create, :prediction => params
     end
     
     before(:each) do
       Prediction.stub!(:create!)
       Prediction.stub!(:recent)
-      controller.stub!(:logged_in?).and_return(true)
+      
+      @user = User.new
+      controller.stub(:authenticate_user!)
+      controller.stub(:current_user).and_return(@user)
     end
-    
-    it 'should redirect to the login page if not logged in' do
-      controller.stub!(:logged_in?).and_return(false)
-      post_prediction
-      response.should redirect_to(login_path)
-    end
-    
+        
     it 'should map POST to /predictions to "create" action' do
-      params_from(:post, '/predictions').should == {
-        :controller => 'predictions', :action => 'create'
-      }
+      {:post => "/predictions"}.should route_to("predictions#create") 
     end
     
     it 'should use the current_user as the creator' do
-      u = mock_model(User)
-      controller.stub!(:current_user).and_return(u)
-      Prediction.should_receive(:create!).with(hash_including(:creator => u))
+      Prediction.should_receive(:create!).with(hash_including(:creator => @user))
       post_prediction
     end
 
@@ -334,14 +327,16 @@ describe PredictionsController do
       Prediction.stub!(:find).and_return(@prediction)
       controller.stub!(:logged_in?).and_return(true)
       controller.stub!(:current_user).and_return(mock_model(User))
+      
+      #@user = User.new
+      #controller.stub(:authenticate_user!)
+      #controller.stub(:current_user).and_return(@user)
     end
     it 'should map GET /preditions/:id to show' do
-      params_from(:get, '/predictions/1').should == {
-        :controller => 'predictions', :action => 'show', :id => '1'
-      }
+       {:get => "/predictions/6"}.should route_to("predictions#show", :id => "6") 
     end
     it 'should map show action to /predictions/:id' do
-      route_for(:controller => 'predictions', :action => 'show', :id => '6').should == '/predictions/6'
+      assert_recognizes({:action => "show", :controller => "predictions", :id => "6"}, { :method=> :get, :path=> "/predictions/6" })
     end
     
     it 'should assign the prediction to prediction' do
@@ -418,60 +413,63 @@ describe PredictionsController do
   
   describe 'Updating the outcome of a prediction' do
     before(:each) do
-      @prediction = mock_model(Prediction, :null_object => true, :to_param => '1')
+      @prediction = mock_model(Prediction, :to_param => '1').as_null_object
       Prediction.stub!(:find).and_return(@prediction)
-      controller.stub!(:logged_in?).and_return(true)
-      controller.stub!(:current_user)
-    end
-    
-    it 'should map POST to /predictions/:id/judge to "judge" action' do
-      params_from(:post, '/predictions/1/judge').should == {
-        :controller => 'predictions', :action => 'judge', :id => '1'
-      }
-    end
-    
-    it 'should map "judge" action to /predictions/1/judge' do
-      route_for(
-        :controller => 'predictions', :action => 'judge', :id => '1'
-      ).should == { :path => '/predictions/1/judge', :method => :post }
     end
     
     def post_outcome(params={})
       post :judge, {:id => '1', :outcome => ''}.merge(params)
     end
+      
+    describe 'current user is signed in' do
+      before(:each) do
+        @user = User.new
+        controller.stub(:authenticate_user!)
+        controller.stub(:current_user).and_return(@user)
+      end
     
-    it 'should require the user to be logged in' do
-      controller.stub!(:logged_in?).and_return(false)
-      post_outcome
-      response.should redirect_to(login_path)
+      it 'should map POST to /predictions/:id/judge to "judge" action' do
+        {:post => "/predictions/6/judge"}.should route_to("predictions#judge", :id => "6")
+      end
+    
+      it 'should map "judge" action to /predictions/1/judge' do
+        assert_recognizes({:action => "judge", :controller => "predictions", :id => "1"}, { :method=> :post, :path=> "/predictions/1/judge" })
+      end
+    
+      it 'should set the prediction to the passed outcome on POST to outcome' do
+        @prediction.should_receive(:judge!).with('right', anything)
+        post_outcome :outcome => 'right'
+      end
+    
+      it 'should pass in the user to the judge method' do
+        controller.stub!(:current_user).and_return(:mr_user)
+        @prediction.should_receive(:judge!).with(anything, :mr_user)
+        post_outcome
+      end
+    
+      it 'should find and assign the prediction based on passed through ID' do
+        Prediction.should_receive(:find).with('444').and_return(@prediction)
+        post_outcome :id => '444'
+        assigns[:prediction].should == @prediction
+      end
+    
+      it 'should redirect to prediction page after POST to outcome' do
+        @prediction.stub!(:to_param).and_return('33')
+        post_outcome :id => '33'
+        response.should redirect_to(prediction_path('33'))
+      end
+    
+      it 'should set a flash variable judged to a css class to apply to the judgment view' do
+        post_outcome
+        flash[:judged].should_not be_nil
+      end
     end
     
-    it 'should set the prediction to the passed outcome on POST to outcome' do
-      @prediction.should_receive(:judge!).with('right', anything)
-      post_outcome :outcome => 'right'
-    end
-    
-    it 'should pass in the user to the judge method' do
-      controller.stub!(:current_user).and_return(:mr_user)
-      @prediction.should_receive(:judge!).with(anything, :mr_user)
-      post_outcome
-    end
-    
-    it 'should find and assign the prediction based on passed through ID' do
-      Prediction.should_receive(:find).with('444').and_return(@prediction)
-      post_outcome :id => '444'
-      assigns[:prediction].should == @prediction
-    end
-    
-    it 'should redirect to prediction page after POST to outcome' do
-      @prediction.stub!(:to_param).and_return('33')
-      post_outcome :id => '33'
-      response.should redirect_to(prediction_path('33'))
-    end
-    
-    it 'should set a flash variable judged to a css class to apply to the judgment view' do
-      post_outcome
-      flash[:judged].should_not be_nil
+    describe 'current user is not signed in' do
+      it 'should require the user to be logged in' do
+        post_outcome
+        response.should redirect_to(new_user_session_path)
+      end
     end
     
     describe 'expiring the cached statistics fragments for users' do
@@ -502,53 +500,57 @@ describe PredictionsController do
 
   describe 'Withdrawing a prediction' do
     before(:each) do
-      @prediction = mock_model(Prediction, :null_object => true, :id => '12')
+      @prediction = mock_model(Prediction, :id => '12').as_null_object
       Prediction.stub!(:find).and_return(@prediction)
-      controller.stub!(:logged_in?).and_return(true)
     end
-
-    describe 'when the current user is the creator of the prediction' do
-
-      before(:each) do
-        controller.stub!(:must_be_authorized_for_prediction)
-      end
-
-      it 'should map POST to /predictions/:id/withdraw to update action' do
-        params_from(:post, '/predictions/1/withdraw').should == {
-          :controller => 'predictions', :action => 'withdraw', :id => '1'
-        }
-      end
     
-      it 'should map the "withdraw" action to /predictions/1/withdraw' do
-        route_for(
-          :controller => 'predictions', :action => 'withdraw', :id => '1'
-        ).should == { :path => '/predictions/1/withdraw', :method => :post }
-      end
-    
+    describe 'when the current user is not signed in' do
       it 'should require the user to be logged in' do
-        controller.stub!(:logged_in?).and_return(false)
+        controller.stub!(:signed_in?).and_return(false)
         post :withdraw, :id => '12'
-        response.should redirect_to(login_path)
-      end
-    
-      it 'should redirect to prediction page after POST to withdraw' do
-        post :withdraw, :id => '12'
-        response.should redirect_to(prediction_path('12'))
-      end
-    
-      it 'should call the withdraw! method on the prediction' do
-        @prediction.should_receive(:withdraw!)
-        post :withdraw, :id => '12'
+        response.should redirect_to(new_user_session_path)
       end
     end
-    describe 'when the current user is not the creator of the prediction' do
-      it 'should deny access' do
-        @prediction.stub!(:creator).and_return(User.new)
-        controller.stub!(:current_user).and_return(User.new)
-        post :withdraw, :id => '12'
-        response.response_code.should == 403
+    
+    describe 'when the current user is signed in' do
+      before(:each) do
+        @user = User.new
+        controller.stub(:authenticate_user!)
+        controller.stub(:current_user).and_return(@user)
       end
-    end
+        
+      describe 'when the current user is the creator of the prediction' do
+      
+        before(:each) do
+         controller.stub!(:must_be_authorized_for_prediction)
+        end
+  
+        it 'should map POST to /predictions/:id/withdraw to withdraw action' do
+          {:post => "/predictions/6/withdraw"}.should route_to("predictions#withdraw", :id => "6")
+        end
+    
+        it 'should map the "withdraw" action to /predictions/1/withdraw' do
+          assert_recognizes({:action => "withdraw", :controller => "predictions", :id => "1"}, { :method=> :post, :path=> "/predictions/1/withdraw" })
+        end
+    
+        it 'should redirect to prediction page after POST to withdraw' do
+          post :withdraw, :id => '12'
+          response.should redirect_to(prediction_path('12'))
+        end
+    
+        it 'should call the withdraw! method on the prediction' do
+          @prediction.should_receive(:withdraw!)
+          post :withdraw, :id => '12'
+        end
+      end
+      describe 'when the current user is not the creator of the prediction' do
+        it 'should deny access' do
+          @prediction.stub!(:creator).and_return(User.new)
+          post :withdraw, :id => '12'
+          response.response_code.should == 403
+        end
+      end
+    end  
   end
   
   [:unjudged, :judged, :future].each do |action|
@@ -580,13 +582,13 @@ describe PredictionsController do
       controller.stub!(:logged_in?).and_return(true)
       controller.stub!(:current_user).and_return(mock_model(User))
     end
-    it 'should map GET /preditions/:id to show' do
-      params_from(:get, '/predictions/1').should == {
-        :controller => 'predictions', :action => 'show', :id => '1'
-      }
+    
+    it 'should map GET /preditions/:id to show' do      
+      {:get => "/predictions/6"}.should route_to("predictions#show", :id => "6")
     end
+    
     it 'should map show action to /predictions/:id' do
-      route_for(:controller => 'predictions', :action => 'show', :id => '6').should == '/predictions/6'
+      assert_recognizes({:action => "show", :controller => "predictions", :id => "6"}, { :method=> :get, :path=> "/predictions/6" })
     end
     
     it 'should assign the prediction to @prediction' do
@@ -670,11 +672,11 @@ describe PredictionsController do
   describe 'getting the edit form for a prediction' do
     it 'should require a login' do
       get :edit, :id => '1'
-      response.should redirect_to(login_path)
+      response.should redirect_to(new_user_session_path)
     end
     describe 'when logged in' do
       before(:each) do
-        controller.stub!(:login_required)
+        controller.stub!(:authenticate_user!)
         @p = create_valid_prediction
       end
       it 'should require the user to have created the prediction' do
@@ -693,11 +695,11 @@ describe PredictionsController do
   describe 'updating a prediction' do
     it 'should require a login' do
       put :update, :id => '1'
-      response.should redirect_to(login_path)
+      response.should redirect_to(new_user_session_path)
     end
     describe 'when logged in' do
       before(:each) do
-        controller.stub!(:login_required)
+        controller.stub!(:authenticate_user!)
         @p = create_valid_prediction
       end
       it 'should require the user to have created the prediction' do

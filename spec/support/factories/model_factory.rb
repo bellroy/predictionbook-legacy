@@ -1,5 +1,4 @@
 module ModelFactory
-  
   def valid_prediction(attributes={})
     p = Prediction.new({
       :creator => valid_user(:name => 'predictor'),
@@ -32,7 +31,7 @@ module ModelFactory
   end
   
   def self.produced_models
-    instance_methods.grep(/^valid_/).collect{|method| method.gsub(/^valid_/,'')}
+    instance_methods.map{|im| im.to_s}.grep(/^valid_/).collect{|method| method.gsub(/^valid_/,'')}
   end
   
   produced_models.each do |model_name|

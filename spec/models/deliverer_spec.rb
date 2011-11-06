@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../spec_helper'
+require 'spec_helper'
 
 describe Deliverer do
   it 'should set default host (we are not in a controller)' do
@@ -45,7 +45,7 @@ describe Deliverer do
       it 'should have a subject' do
         @dn.should_receive(:description).at_least(1).and_return("my description")
         body = create_deadline_notification.header['subject'].to_s
-        TMail::Unquoter.unquote_and_convert_to(body,'utf8').should == "[PredictionBook] Judgement Day for ‘my description’"
+        TMail::Unquoter.unquote_and_convert_to(body,'utf8').should == "[PredictionBook] Judgement Day for 'my description'"
       end
     end
     

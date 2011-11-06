@@ -17,7 +17,7 @@ namespace :db do
   
   desc "Delete all private predictions from database"
   task :drop_private_predictions => :environment do
-    abort "Won't drop prediction if not in development environment! Currently “#{Rails.env}”" unless Rails.env.development?
+    abort "Won't drop prediction if not in development environment! Currently '#{Rails.env}'" unless Rails.env.development?
     Prediction.all.select(&:private?).each(&:destroy)
   end
   

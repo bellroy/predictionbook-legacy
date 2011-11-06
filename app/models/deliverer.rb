@@ -3,13 +3,15 @@ class Deliverer < ActionMailer::Base
   
   def deadline_notification(dn)
     standard_headers(dn)
-    subject      "[PredictionBook] Judgement Day for ‘#{dn.description}’"
+    #subject      "[PredictionBook] Judgement Day for ‘#{dn.description}’"
+    subject      "[PredictionBook] Judgement Day for '#{dn.description}'"
     body         :prediction => dn.prediction, :deadline => dn
   end
   
   def response_notification(rn)
     standard_headers(rn)
-    subject      "[PredictionBook] There has been some activity on ‘#{rn.description}’"
+    #subject      "[PredictionBook] There has been some activity on ‘#{rn.description}’"
+    subject      "[PredictionBook] There has been some activity on '#{rn.description}'"
     body         :prediction => rn.prediction, :notification => rn
   end
   

@@ -11,10 +11,10 @@ class Notification < ActiveRecord::Base
   
   validates_uniqueness_of :user_id, :scope => [:prediction_id, :type]
   
-  named_scope :unsent, :conditions => {:sent => false}
-  named_scope :sent,   :conditions => {:sent => true}
-  named_scope :enabled,   :conditions => {:enabled => true}
-  named_scope :disabled,  :conditions => {:enabled => false}
+  scope :unsent, where(:sent => false)
+  scope :sent, where(:sent => true)
+  scope :enabled, where(:enabled => true)
+  scope :disabled, where(:enabled => false)
   
   def initialize(attrs={})
     super

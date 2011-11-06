@@ -1,5 +1,6 @@
+# coding: utf-8
 class PredictionsController < ApplicationController
-  before_filter :login_required, :only => [:new, :create, :judge, :withdraw, :edit, :update]
+  before_filter :authenticate_user!, :only => [:new, :create, :judge, :withdraw, :edit, :update]
   before_filter :find_prediction, :only => [:judge, :show, :withdraw, :edit, :update]
   before_filter :must_be_authorized_for_prediction, :only => [:withdraw, :edit, :update]
   
@@ -62,7 +63,7 @@ class PredictionsController < ApplicationController
     if @prediction.private?
       access_forbidden and return unless current_user && current_user.authorized_for(@prediction)
     end
-    if logged_in?
+    if user_signed_in?
       @prediction_response = Response.new(:user => current_user)
       @deadline_notification = @prediction.deadline_notification_for_user(current_user)
       @response_notification = @prediction.response_notification_for_user(current_user)
