@@ -235,12 +235,30 @@ describe Prediction do
         
         Prediction.unjudged.should == [past]
       end
-      
+
       it 'should order by deadline' do
         long_ago = create_valid_prediction(:deadline => 2.days.ago)
         longer_ago = create_valid_prediction(:deadline => 2.weeks.ago)
         
         Prediction.unjudged.should == [long_ago, longer_ago]
+      end
+
+      it 'should return currently unjudged predictions with previous judgements' do
+        rejudged = create_valid_prediction
+        rejudged.judge!(:right, nil)
+        sleep 1 # second granularity on judgement created_at
+        rejudged.judge!(nil, nil)
+
+        Prediction.unjudged.should == [rejudged]
+      end
+
+      it 'should not return currently judged predictions with previous unknown judgements' do
+        rejudged = create_valid_prediction
+        rejudged.judge!(nil, nil)
+        sleep 1 # second granularity on judgement created_at
+        rejudged.judge!(:right, nil)
+
+        Prediction.unjudged.should == []
       end
     end
     
