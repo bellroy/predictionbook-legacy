@@ -41,13 +41,15 @@ div.wrapper {
 -------------------------------------------------------------------------------------- */
 .clear:after,
 form div.row:after {
-    clear: both;
-    content: ".";
-    display: block;
-    height: 0;
-    visibility: hidden;
+	clear: both;
+	content: ".";
+	display: block;
+	height: 0;
+	visibility: hidden;
 }
-a img {	border: none; }
+a img {
+	border: none;
+}
 
 
 /* General Typography
@@ -65,35 +67,42 @@ h1, h2 {
 h1 {
 	color: #363535;
 	font-size: 18px;
+	word-wrap: break-word;
 }
 h2 {
-  display: inline-block;
+	display: inline-block;
 	font-size: 15px;
 	background-color: #221e1f;
 	color: #fff;
 	font-weight: normal;
 	padding: 3px 10px;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
 }
 h3 {
 	font-size: 12px;
 }
 a {
-  text-decoration:none;
-  color: #00C;
+	text-decoration:none;
+	color: #00C;
 }
 a:hover {
-  background-color: #cee;
+	background-color: #cee;
 }
 a:visited {
-  color: #808;  
+	color: #808;
 }
-#content h2 a, h2 a:visited  {
-  color: white;
-  font-weight: normal;
-  text-decoration: underline;
+#content h2 a, h2 a:visited {
+	color: white;
+	font-weight: normal;
+	text-decoration: underline;
 }
 h2 a:hover {
-  background-color: #ccc;
+	background-color: #ccc;
+}
+abbr {
+	border-bottom: 1px dotted #ccc;
 }
 
 /* Buttons
@@ -136,7 +145,7 @@ a.button {
 }
 
 #nav-menu li:hover {
-  background-color: #655271;
+	background-color: #655271;
 }
 
 ul#nav-menu {
@@ -169,18 +178,18 @@ ul#nav-menu li a {
 }
 
 #user-links li {
-  display: block;
-  float: left;
+	display: block;
+	float: left;
 }
 
 #user-links li::after {
-  content: '|';
-  margin: 0 10px;
+	content: '|';
+	margin: 0 10px;
 }
 
 #user-links li:last-child::after {
-  margin: 0;
-  content: '';
+	margin: 0;
+	content: '';
 }
 
 #header-main {
@@ -194,15 +203,15 @@ a#logo {
 	outline: none;
 }
 a#logo:hover {
-  background-color:inherit;
+	background-color:inherit;
 }
 a#logo img {
 	display: block;
 }
 #title {
-  text-align:right;
-  line-height: 75px;
-  margin-right: 3em;
+	text-align:right;
+	line-height: 75px;
+	margin-right: 3em;
 }
 #title h1 {
 }
@@ -220,20 +229,29 @@ a#logo img {
 }
 
 #notice, #error {
-  position: absolute;
-  margin: 0 30px 5px 30px;
-  top: 1em;
-  text-align: center;
-  width: 83%;
+	position: absolute;
+	margin: 0 30px 5px 30px;
+	top: 1em;
+	text-align: center;
+	width: 83%;
 }
-#error { color: #f22; font-weight: bold; }
-#notice { color: #2a2; }
+#error {
+	color: #f22;
+	font-weight: bold;
+}
+#notice {
+	color: #2a2;
+}
 
 span.correct {
-  padding-right: 17px;
-  background: url(tick.png) top right no-repeat;
+	padding-right: 17px;
+	background: url(tick.png) top right no-repeat;
 }
 span.wrong {
-  padding-right: 14px;
-  background: url(cross.png) bottom right no-repeat;
+	padding-right: 14px;
+	background: url(cross.png) bottom right no-repeat;
+}
+
+.break-word {
+	word-wrap: break-word;
 }

@@ -39,7 +39,7 @@ class PredictionsController < ApplicationController
   
   def home
     @prediction = Prediction.new(:creator => current_user)
-    @responses = Response.recent.limit(10)
+    @responses = Response.recent.limit(25)
     @title = "How sure are you?"
     @filter = 'popular'
     @predictions = Prediction.popular.limit(5)
@@ -96,10 +96,10 @@ class PredictionsController < ApplicationController
 
   def happenstance
     @title = "Recent Happenstance"
-    @unjudged = Prediction.unjudged.limit(3)
-    @judged = Prediction.judged.limit(3)
-    @recent = Prediction.recent.limit(3)
-    @responses = Response.recent.limit(6)
+    @unjudged = Prediction.unjudged.limit(5)
+    @judged = Prediction.judged.limit(5)
+    @recent = Prediction.recent.limit(5)
+    @responses = Response.recent.limit(25)
   end
   
   def judge

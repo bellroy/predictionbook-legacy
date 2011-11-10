@@ -28,7 +28,7 @@ span.notice a {
 
 p.note {
   font-style: italic;
-  color: #999;
+  color: #777;
   width: 28em;
 }
 p.note em {
@@ -52,7 +52,7 @@ form#new_prediction {
 	font-size: 11px;
 }
 form #prediction_description { width: 30em; height: 3.5em; }
-form #response_comment { height: 2.5em; }
+form #response_comment { height: 2.5em; width: 97%; }
 form input[type="text"],
 form input[type="password"],
 form textarea {

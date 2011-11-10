@@ -54,7 +54,7 @@ body.home #new_prediction {
 }
 
 body.home #responses li {
-  margin: 0.75em;
+  margin: 0 0 0.75em 0.75em;
 }
 
 body.home #popular {
