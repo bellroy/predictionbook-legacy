@@ -3,7 +3,7 @@
   <table>
     <thead>
       <tr>
-        <th class="narrow">Predicted Certainty</th>
+        <th class="narrow">Confidence</th>
         <%- statistics.each do |stat| -%>
         <th><%= certainty_heading(stat.heading) %></th>
         <%- end -%>
@@ -12,7 +12,7 @@
     </thead>
     <tbody>
       <tr>
-        <th class="narrow">Actual Certainty</th>
+        <th class="narrow">Accuracy</th>
         <%- statistics.each do |stat| -%>
           <td><%= stat.accuracy %>%</td>
         <%- end -%>
