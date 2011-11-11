@@ -17,7 +17,3 @@ BSD - see http://creativecommons.org/licenses/BSD/.
 === Installation
 
 See INSTALL.
-
-=== Google Analytics
-
-Insert your analytics tracker id at the bottom of app/views/layouts/application.html.erb
