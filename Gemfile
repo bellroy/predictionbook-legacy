@@ -9,7 +9,7 @@ gem 'devise'
 gem "version_fu", "~> 1.0.1"
 gem "haml-rails", ">= 0.2"
 
-gem 'RedCloth', '~> 4.2.7', :require => 'redcloth'
+gem 'RedCloth', '~> 4.2.9', :require => 'redcloth'
 gem 'prarupa'
 
 gem 'uuidtools', '~> 1.0.0'
@@ -17,6 +17,7 @@ gem 'exception_notification_rails3', :require => 'exception_notifier'
 gem 'chronic'
 
 group :development, :test do
+  gem 'rake'
   gem 'rspec', '>=2.0.1'
   gem 'rspec-rails', '>=2.0.1'
   gem 'ZenTest'

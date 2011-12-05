@@ -1,4 +1,5 @@
 config/database.yml
+.bundle/*
 /coverage
 tmp/*
 doc/api

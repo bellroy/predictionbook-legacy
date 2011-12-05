@@ -1,7 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
-    RedCloth (4.2.7)
+    RedCloth (4.2.9)
     ZenTest (4.5.0)
     abstract (1.0.0)
     actionmailer (3.0.9)
@@ -140,7 +140,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  RedCloth (~> 4.2.7)
+  RedCloth (~> 4.2.9)
   ZenTest
   autotest-rails
   chronic
@@ -151,6 +151,7 @@ DEPENDENCIES
   mysql2 (< 0.3)
   prarupa
   rails (= 3.0.9)
+  rake
   rspec (>= 2.0.1)
   rspec-rails (>= 2.0.1)
   ruby-debug19
