@@ -21,7 +21,7 @@ describe 'An index of predictions' do
   it 'should render predictions' do
     prediction = Prediction.new
     prediction.stub!(:to_param).and_return(437)
-    prediction.save(false)
+    prediction.save(:validate => false)
     prediction.stub!(:deadline).and_return(Time.now)
     prediction.stub!(:created_at).and_return(Time.now)
     prediction.stub!(:mean_confidence).and_return(10)

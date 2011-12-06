@@ -3,7 +3,6 @@ require 'spec_helper'
 describe 'predictions/new.html.erb' do
   before(:each) do
     errors = mock('errors', :on => nil)
-    #assigns[:prediction] = @prediction = mock_model(Prediction, :new_record? => true, :errors => errors, :null_object => true)
     assigns[:prediction] = @prediction = stub_model(Prediction).as_new_record
     view.stub!(:user_statistics_cache_key).and_return "stats"
     view.stub!(:statistics).and_return(Statistics.new([])) 

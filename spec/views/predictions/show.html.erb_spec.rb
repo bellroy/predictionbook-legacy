@@ -9,11 +9,10 @@ describe 'Prediction detail page' do
       :id => nil,
       :new_record? => true,
       :user => @user,
-      :null_object => true,
       :errors => mock('errors', :on => nil)
        #HACK, mock_model#errors should expect this message!
        #TODO: extract this and possibly submit RSpec-Rails patch
-    )
+    ).as_null_object
     view.stub!(:render).with('predictions/events')
   end
   

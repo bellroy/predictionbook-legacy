@@ -5,12 +5,12 @@ describe MarkupHelper do
   
   describe '#confidence_and_count' do
     it 'should return the number of wagers of a prediction' do
-      prediction = mock_model(Prediction, :null_object => true, :wager_count => 20)
+      prediction = mock_model(Prediction, :wager_count => 20).as_null_object
       confidence_and_count(prediction).should =~ /20/
     end
     
     it 'should return the mean confidence of a prediction' do
-      prediction = mock_model(Prediction, :null_object => true, :mean_confidence => '13')
+      prediction = mock_model(Prediction, :mean_confidence => '13').as_null_object
       confidence_and_count(prediction).should =~ /13/
     end
   end
