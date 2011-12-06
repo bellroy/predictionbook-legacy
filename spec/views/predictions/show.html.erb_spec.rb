@@ -29,11 +29,11 @@ describe 'Prediction detail page' do
       render_show
     end
     it 'should show when it was created' do
-      response.should have_tag('span', "3 days ago")
+      rendered.should have_tag('span', "3 days ago")
     end
 
     it 'should put the complete date in the title attribute of the span' do
-      response.should have_tag('span[title=?]', @time.to_s)
+      rendered.should have_tag('span[title=?]', @time.to_s)
     end
   end
   
@@ -41,7 +41,7 @@ describe 'Prediction detail page' do
     it 'should show who made the prediction' do
       @prediction.stub!(:creator).and_return('Person')
       render_show
-      response.should have_tag('[class=user]', 'Person')
+      rendered.should have_tag('[class=user]', 'Person')
     end
   end
       
@@ -52,10 +52,10 @@ describe 'Prediction detail page' do
       render_show
     end
     it 'should show when the outcome will be known' do
-      response.should have_tag('span', /10 days/)
+      rendered.should have_tag('span', /10 days/)
     end
     it 'should put the complete date in the title attribute of the span' do
-      response.should have_tag('span[title=?]', @time.to_s)
+      rendered.should have_tag('span[title=?]', @time.to_s)
     end
   end
   
@@ -71,7 +71,7 @@ describe 'Prediction detail page' do
           view.stub!(:logged_in?).and_return(false)
        
           render_show
-          response.should_not have_tag('form[action="/predictions/1/judge"]')
+          rendered.should_not have_tag('form[action="/predictions/1/judge"]')
         end
       end
       
@@ -82,7 +82,7 @@ describe 'Prediction detail page' do
           view.stub!(:current_user).and_return(@user)
           @prediction.stub!(:withdrawn?).and_return(true)
           render_show
-          response.should_not have_tag('form[action="/predictions/1/judge"]')
+          rendered.should_not have_tag('form[action="/predictions/1/judge"]')
         end
       end
 
@@ -98,51 +98,51 @@ describe 'Prediction detail page' do
             render_show
           end
           it 'should have a form tag that submits to outcome' do
-            response.should have_tag('form[method="post"][action="/predictions/1/judge"]')
+            rendered.should have_tag('form[method="post"][action="/predictions/1/judge"]')
           end
       
           it 'should have a right button' do
-            response.should have_tag('input[type="submit"][name="outcome"][value="Right"]')
+            rendered.should have_tag('input[type="submit"][name="outcome"][value="Right"]')
           end
       
           it 'should have a wrong button' do
-            response.should have_tag('input[type="submit"][name="outcome"][value="Wrong"]')
+            rendered.should have_tag('input[type="submit"][name="outcome"][value="Wrong"]')
           end
 
           it 'should have a unknown button' do
-            response.should have_tag('input[type="submit"][name="outcome"][value="Unknown"]')
+            rendered.should have_tag('input[type="submit"][name="outcome"][value="Unknown"]')
           end
         end
         describe 'button state' do
           it 'should disable the right button when the prediction is right' do
             @prediction.stub!(:right?).and_return(true)
             render_show
-            response.should have_tag('input[type="submit"][value="Right"][disabled="disabled"]')
+            rendered.should have_tag('input[type="submit"][value="Right"][disabled="disabled"]')
           end
           it 'should not disable the right button when the prediction is not right' do
             @prediction.stub!(:right?).and_return(false)
             render_show
-            response.should have_tag('input[type="submit"][value="Right"]:not([disabled="disabled"])')
+            rendered.should have_tag('input[type="submit"][value="Right"]:not([disabled="disabled"])')
           end
           it 'should disable the wrong button when the prediction is wrong' do
             @prediction.stub!(:wrong?).and_return(true)
             render_show
-            response.should have_tag('input[type="submit"][value="Wrong"][disabled="disabled"]')
+            rendered.should have_tag('input[type="submit"][value="Wrong"][disabled="disabled"]')
           end
           it 'should not disable the wrong button when the prediction is not wrong' do
             @prediction.stub!(:wrong?).and_return(false)
             render_show
-            response.should have_tag('input[type="submit"][value="Wrong"]:not([disabled="disabled"])')
+            rendered.should have_tag('input[type="submit"][value="Wrong"]:not([disabled="disabled"])')
           end
           it 'should disable the unknown button when the prediction is unknown' do
             @prediction.stub!(:unknown?).and_return(true)
             render_show
-            response.should have_tag('input[type="submit"][value="Unknown"][disabled="disabled"]')
+            rendered.should have_tag('input[type="submit"][value="Unknown"][disabled="disabled"]')
           end
           it 'should not disable the unknown button when the prediction is known' do
             @prediction.stub!(:unknown?).and_return(false)
             render_show
-            response.should have_tag('input[type="submit"][value="Unknown"]:not([disabled="disabled"])')
+            rendered.should have_tag('input[type="submit"][value="Unknown"]:not([disabled="disabled"])')
           end
         end
       end
@@ -160,8 +160,8 @@ describe 'Prediction detail page' do
         view.stub!(:logged_in?).and_return(false)
         
         render_show
-        response.should_not have_tag('form#new_response')
-        response.should_not have_tag('form[action=?]', '/predictions/6/responses')
+        rendered.should_not have_tag('form#new_response')
+        rendered.should_not have_tag('form[action=?]', '/predictions/6/responses')
       end
     end
     
@@ -181,32 +181,32 @@ describe 'Prediction detail page' do
         describe 'check box for the notify user on overdue' do
           it "should have a form that submits to #{form_name}" do
             render_show
-            response.should have_tag('form[action=?]', "/#{form_name}s")
+            rendered.should have_tag('form[action=?]', "/#{form_name}s")
           end
 
           it "should have a form with id new_#{form_name}" do
             render_show
-            response.should have_tag("form#new_#{form_name}")
+            rendered.should have_tag("form#new_#{form_name}")
           end
           
           it "should have a class of 'single-checkbox-form' on the form tag" do
             render_show
-            response.should have_tag("form.single-checkbox-form")
+            rendered.should have_tag("form.single-checkbox-form")
           end
 
           it 'should have a hidden field for prediction_id' do
             render_show
-            response.should have_tag('input[type="hidden"][name=?]', "#{form_name}[prediction_id]")
+            rendered.should have_tag('input[type="hidden"][name=?]', "#{form_name}[prediction_id]")
           end
 
           it 'should have a submit button' do
             render_show
-            response.should have_tag("form#new_#{form_name} input[type=\"submit\"]")
+            rendered.should have_tag("form#new_#{form_name} input[type=\"submit\"]")
           end
 
           it 'should have a enabled checkbox' do
             render_show
-            response.should have_tag('input[type="checkbox"][name=?][checked=?]', "#{form_name}[enabled]", "checked")
+            rendered.should have_tag('input[type="checkbox"][name=?][checked=?]', "#{form_name}[enabled]", "checked")
           end
         end
       end
@@ -223,33 +223,33 @@ describe 'Prediction detail page' do
       it 'should have a form that submits to predictions/:id/responses' do
         @prediction.stub!(:to_param).and_return('6')
         render_show
-        response.should have_tag('form[action=?]', '/predictions/6/responses')
+        rendered.should have_tag('form[action=?]', '/predictions/6/responses')
       end
       
       it 'should have a form with id new_response' do
         render_show
-        response.should have_tag('form#new_response')
+        rendered.should have_tag('form#new_response')
       end
       
       it 'should have a textarea for comment' do
         render_show
-        response.should have_tag('textarea[name=?]', 'response[comment]')
+        rendered.should have_tag('textarea[name=?]', 'response[comment]')
       end
   
       it 'should have a field for confidence' do
         render_show
-        response.should have_tag('form input[name=?]','response[confidence]')
+        rendered.should have_tag('form input[name=?]','response[confidence]')
       end
   
       it 'should not show the confidence field if the prediction is not open' do
         @prediction.stub!(:open?).and_return(false)
         render_show
-        response.should_not have_tag('form input[name=?]','response[confidence]')
+        rendered.should_not have_tag('form input[name=?]','response[confidence]')
       end
       
       it 'should have a submit button' do
         render_show
-        response.should have_tag('form#new_response input[type="submit"]')
+        rendered.should have_tag('form#new_response input[type="submit"]')
       end
     end
   end
