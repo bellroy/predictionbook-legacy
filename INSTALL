@@ -1,5 +1,13 @@
 == Local installation
 
+=== Dependencies
+
+==== Generic
+$ gem install bundler rails rake
+
+==== Ubuntu 11.10
+$ sudo apt-get install ruby1.9.1-dev libxslt-dev libmysqlclient-dev mysql-server rubygems
+
 === OSX, Linux
 
 Something like:
