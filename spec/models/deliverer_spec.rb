@@ -7,11 +7,11 @@ describe Deliverer do
 
   describe 'deadline notification' do  
     before(:each) do
-      @dn = mock('deadline notification', :null_object => true, :to_param => '1')
+      @dn = mock('deadline notification', :to_param => '1').as_null_object
     end
     
     def create_deadline_notification
-      Deliverer.create_deadline_notification(@dn)
+      Deliverer.deadline_notification(@dn)
     end
     
     describe 'headers' do
