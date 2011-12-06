@@ -1,6 +1,8 @@
 == Local installation
 
 === Dependencies
+* Rails >= 3
+* Ruby >= 1.9
 
 ==== Generic
 $ gem install bundler rails rake
