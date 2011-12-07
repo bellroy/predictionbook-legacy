@@ -36,7 +36,6 @@ class Response < ActiveRecord::Base
   scope :not_private, joins(:prediction).where('predictions.private' => false)
   
   def self.recent
-    #not_private.rsort
     not_private
   end
   

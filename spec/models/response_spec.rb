@@ -24,18 +24,15 @@ describe Response do
   end
   
   describe 'finders' do
+    before do
+      5.times{create_valid_response}
+    end
+
     it_should_behave_like 'model class with common scopes'
     
     describe '"limit" scope' do
-      before(:each) do
-        5.times{create_valid_response}
-      end
-      it 'should default to 3' do
-        Response.limit.size.should == 3
-      end
-
       it 'should take argument' do
-        Response.limit(4).size.should == 4
+        Response.all.limit(4).size.should == 4
       end
     end
 
@@ -58,8 +55,7 @@ describe Response do
       before do
         @rs = Response
       end
-      it 'should call rsort and public scopes' do
-        Response.should_receive(:rsort).and_return(@rs)
+      it 'should call public scopes' do
         Response.should_receive(:not_private).and_return(@rs)
         Response.recent.should == @rs
       end
@@ -236,14 +232,14 @@ describe Response do
       response.should be_valid
     end
     
-    it 'should limit comments to 160 characters' do
-      response = valid_response(:comment => ("A" * 161))
+    it 'should limit comments to 250 characters' do
+      response = valid_response(:comment => ("A" * 251))
       response.should_not be_valid
-      response.errors[:comment].should =~ /160/
+      response.errors[:comment].first.should include("250")
     end
     
-    it 'should allow html that would still display less than 160 characters' do
-      response = valid_response(:comment => (%Q{A "link":http://www.google.com/#{'a' * 161}}))
+    it 'should allow html that would still display less than 250 characters' do
+      response = valid_response(:comment => (%Q{A "link":http://www.google.com/#{'a' * 251}}))
       response.should have(:no).errors_on(:comment)
     end
 
