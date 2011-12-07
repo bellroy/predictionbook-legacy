@@ -28,8 +28,6 @@ describe Response do
       5.times{create_valid_response}
     end
 
-    it_should_behave_like 'model class with common scopes'
-    
     describe '"limit" scope' do
       it 'should take argument' do
         Response.all.limit(4).size.should == 4
