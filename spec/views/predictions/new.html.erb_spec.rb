@@ -9,7 +9,7 @@ describe 'predictions/new.html.erb' do
     @user = mock_model(User, :has_email? => false)
     view.stub!(:user_signed_in?).and_return(true)
     view.stub!(:current_user).and_return(@user)
-    
+    view.stub!(:cache).and_yield
     @user.stub!(:to_param).and_return "username"
   end
   
