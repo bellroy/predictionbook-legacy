@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../../spec_helper'
 describe "prediction list" do
 
   before do
-    assigns[:predictions] = []
+    assign(:predictions, [])
     assigns[:statistics] = Statistics.new([])
     view.stub!(:show_statistics?).and_return(false)
     view.stub!(:current_user).and_return User.new
@@ -44,12 +44,14 @@ describe "prediction list" do
 
       it "should show a message if there are no predictions" do
         render_view
-        rendered.should have_tag('p', /No predictions to show; so\s+make your own!/)
+        rendered.should have_selector('p') do |p|
+	  p.should contain(/No predictions to show; so\s+make your own!/)
+	end
       end
 
       it "should provide a link to make a new prediction if there are none" do
         render_view
-        rendered.should have_tag('a[href=?]', '/predictions/new')
+        rendered.should have_selector('a[href=?]', :content => '/predictions/new')
       end
 
     end
@@ -62,7 +64,7 @@ describe "prediction list" do
 
       it "should show a message if there are no predictions" do
         render_view
-        rendered.should have_tag('p', 'No predictions to show')
+        rendered.should have_selector('p', :content => 'No predictions to show')
       end
     
     end
