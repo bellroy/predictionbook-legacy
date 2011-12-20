@@ -252,7 +252,8 @@ describe PredictionsController do
     end
 
     before(:each) do
-      Prediction.stub!(:create!)
+      @prediction = Prediction.new
+      Prediction.stub!(:create!).and_return(@prediction)
       Prediction.stub!(:recent)
 
       @user = User.new
@@ -275,11 +276,7 @@ describe PredictionsController do
     end
 
     describe 'redirect' do
-      before do
-        @prediction = Prediction.new
-      end
       it "should redirect to the prediction view page" do
-        Prediction.stub!(:create!).and_return(@prediction)
         post_prediction
 
         response.should redirect_to(prediction_path(@prediction))
