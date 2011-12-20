@@ -24,7 +24,7 @@
 			  <li><%= link_to 'Happenstance', happenstance_path %></li>
         <li><%= link_to 'Upcoming predictions', future_predictions_path %></li>
 			</ul>
-      
+
       <ul id="user-links">
 		  <%- unless user_signed_in? -%>
         <li><%= link_to 'Login', new_user_session_path %></li>
@@ -39,7 +39,7 @@
 		</div><!-- #nav -->
 		<div id="header-main" class="clear">
 		   <%= link_to image_tag('logo.png', :alt => 'PredictionBook'), '/', :id => 'logo' %>
-			
+
 			 <form id="search" method="get" action="http://www.google.com/search">
           <div class="clear">
              <input type="hidden" name="sitesearch" value="predictionbook.com" />
@@ -47,22 +47,22 @@
              <input type="image" src="/styling/button-search.png" alt="Search" />
           </div>
        </form>
-       
+
 		</div><!-- #header-main -->
-	</div><!-- #header -->			
+	</div><!-- #header -->
 
 	<div id="main-wrap">
 	<div id="main-inner">
 	<div id="main" class="wrapper clear">
 
 		<%= yield :feature %>
-		
+
 		<%= render :partial => 'layouts/messages' %>
 
 		<div id="content" class="clear">
       <%= yield %>
 		</div><!-- #content -->
-		
+
 	</div><!-- #main -->
 	</div><!-- #main-inner -->
 	</div><!-- #main-wrap -->
@@ -89,8 +89,6 @@
 	</div><!-- #footer -->
 
 </div><!-- #container -->
-
-<script src="http://pbook.uservoice.com/pages/general/widgets/tab.js?alignment=right&amp;color=000000" type="text/javascript"></script>
 
 <script type="text/javascript">
   var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
