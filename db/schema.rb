@@ -96,12 +96,4 @@ ActiveRecord::Schema.define(:version => 20110704121357) do
 
   add_index "users", ["login"], :name => "index_users_on_login", :unique => true
 
-  create_table "wagers", :force => true do |t|
-    t.integer  "prediction_id"
-    t.string   "name"
-    t.integer  "confidence"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
 end
