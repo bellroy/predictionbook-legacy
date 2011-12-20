@@ -238,11 +238,6 @@ describe PredictionsController do
         get :new
         response.should redirect_to(new_user_session_path)
       end
-
-      it 'should store the destination url in the session' do
-        controller.should_receive(:store_location)
-        get :new
-      end
     end
   end
 
