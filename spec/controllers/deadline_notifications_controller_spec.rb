@@ -35,7 +35,7 @@ describe DeadlineNotificationsController do
     end
     describe 'logged in' do
       before do
-        controller.stub!(:logged_in?).and_return true
+        controller.stub!(:user_signed_in?).and_return true
         controller.stub!(:current_user).and_return(user = mock('user'))
         controller.stub!(:notification_collection).and_return(@collection = mock('collection'))
       end
@@ -50,7 +50,7 @@ describe DeadlineNotificationsController do
       end
     end
   end
-  
+
   describe 'update' do
     it 'should require login' do
       put :update, :id => '1'
@@ -58,7 +58,7 @@ describe DeadlineNotificationsController do
     end
     describe 'logged in' do
       before do
-        controller.stub!(:logged_in?).and_return true
+        controller.stub!(:user_signed_in?).and_return true
         @notification = mock_model(DeadlineNotification).as_null_object
         controller.stub!(:current_user).and_return(user = mock('user'))
         controller.stub!(:notification_collection).and_return(collection = mock('collection'))
@@ -66,7 +66,7 @@ describe DeadlineNotificationsController do
       end
       it 'should modify the notification' do
         @notification.should_receive(:update_attributes!).with('enabled' => '1')
-        
+
         put :update, :id => '1', :deadline_notification => { :enabled => '1' }
       end
       it "should redirect to the prediction_path of it's prediction" do
@@ -76,7 +76,7 @@ describe DeadlineNotificationsController do
       end
     end
   end
-  
+
   describe 'notification collection accessor' do
     it 'should ask the current user for its deadline_notifications' do
       controller.stub!(:current_user).and_return(user = mock('user'))
