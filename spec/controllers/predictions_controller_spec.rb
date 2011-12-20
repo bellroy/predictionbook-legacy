@@ -274,13 +274,13 @@ describe PredictionsController do
       it "should redirect to the prediction view page" do
         post_prediction
 
-        response.should redirect_to(prediction_path(@prediction))
+        response.should redirect_to(@prediction)
       end
       it 'should go to the index predictions view if there was a duplicate submit' do
         Prediction.stub!(:create!).and_raise(Prediction::DuplicateRecord.new(@prediction))
         post_prediction
 
-        response.should redirect_to(prediction_path(@prediction))
+        response.should redirect_to(@prediction)
       end
     end
 
