@@ -18,26 +18,37 @@ describe Prediction do
   end
   
   describe 'validations' do
-    before(:each) do
-      @prediction = Prediction.new
-      @prediction.valid?
+    describe 'with default values' do
+      before(:each) do
+        @prediction = Prediction.new
+        @prediction.valid?
+      end
+
+      it 'should pass on objects from modelfactory' do
+        valid_prediction.should be_valid
+        create_valid_prediction.should be_valid
+      end
+
+      it 'should require a creator' do
+        @prediction.should have(1).error_on(:creator)
+      end
+
+      it 'should require a deadline' do
+        @prediction.should have(1).error_on(:deadline)
+      end
+
+      it 'should require a description' do
+        @prediction.should have(1).error_on(:description)
+      end
     end
     
-    it 'should pass on objects from modelfactory' do
-      valid_prediction.should be_valid
-      create_valid_prediction.should be_valid
-    end
-    
-    it 'should require a creator' do
-      @prediction.should have(1).error_on(:creator)
-    end
-    
-    it 'should require a deadline' do
-      @prediction.should have(1).error_on(:deadline)
-    end
-    
-    it 'should require a description' do
-      @prediction.should have(1).error_on(:description)
+    describe 'with invalid values' do
+      it 'should not accept a deadline too far into the future to store' do
+        date = 300000.years.from_now
+        prediction = Prediction.new(:deadline => date)
+        prediction.valid?
+        prediction.should have(1).error_on(:deadline)
+      end
     end
   end
   
