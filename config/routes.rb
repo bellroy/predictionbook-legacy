@@ -11,7 +11,9 @@ ActionController::Routing::Routes.draw do |map|
     users.signup '/signup', :action => 'new'
   end
   
-  map.resources :users, :member => {:settings => :get}, :has_many => :deadline_notifications
+  map.resources :users,
+  :member => {:settings => :get, :due_for_judgement => :get },
+  :has_many => :deadline_notifications
 
   map.resources :deadline_notifications
   map.resources :response_notifications
