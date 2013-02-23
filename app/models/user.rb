@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'digest/sha1'
 
 class User < ActiveRecord::Base
@@ -63,6 +64,10 @@ class User < ActiveRecord::Base
   
   def has_email?
     !email.blank?
+  end
+
+  def has_overdue_judgements?
+    !!predictions.index { |x| x.due_for_judgement?}
   end
 
   def authorized_for(prediction)

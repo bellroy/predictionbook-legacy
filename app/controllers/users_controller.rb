@@ -1,5 +1,5 @@
-class UsersController < ApplicationController
-  before_filter :lookup_user, :only => [:show, :update, :settings]
+ class UsersController < ApplicationController
+  before_filter :lookup_user, :only => [:show, :update, :settings, :due_for_judgement]
   before_filter :login_required, :only => [:settings, :update]
   before_filter :user_is_current_user, :only => [:settings, :update]
   
@@ -28,9 +28,16 @@ class UsersController < ApplicationController
   end
   
   def settings
-      @title = "Settings for #{current_user}"
+    @title = "Settings for #{current_user}"
   end
- 
+
+  def due_for_judgement
+    @title = "Predictions by #{@user} due for judgement"
+    @predictions = @user.predictions
+    @predictions = @predictions.not_private unless current_user == @user
+    @predictions = @predictions.select { |x| x.due_for_judgement? }
+  end
+
   def create
     logout_keeping_session!
     @user = User.new(params[:user])
